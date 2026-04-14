@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Request - MEF Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #F5F5F7; /* Apple premium light gray background */
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+        }
+
+        /* --- Floating Page Header --- */
+        .page-header {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            position: relative;
+            text-align: center;
+            color: #1d1d1f;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffffff;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-50%) translateX(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: #1d1d1f;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #86868b;
+        }
+
+        /* --- Premium Container Card --- */
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 
+                        0 1px 2px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            animation: slideUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+            padding: 40px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+        }
+
+        /* Apple-style Inputs */
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            background: #ffffff;
+            border: 1px solid #d2d2d7;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-family: inherit;
+            color: #1d1d1f;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .form-control:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Apple-style Buttons */
+        .btn {
+            padding: 16px 36px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: -0.2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+        }
+
+        .btn-secondary {
+            background: #f5f5f7;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8ed;
+            transform: scale(1.02);
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-danger {
+            background: #fee;
+            color: #991b1b;
+            border: 2px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #6ee7b7;
+        }
+
+        .student-info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 24px 30px;
+            border-radius: 16px;
+            margin-bottom: 35px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .student-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.25rem;
+            color: #1d1d1f;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #86868b;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 1.05rem;
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        .field-group {
+            display: none;
+        }
+
+        .field-group.active {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px 15px; }
+
+            .page-header h1 { font-size: 2rem; }
+            .page-header { margin-bottom: 20px; }
+            .back-btn { top: -10px; transform: none; left: 50%; transform: translateX(-50%); position: relative; margin-bottom: 15px; }
+
+            .content-wrapper {
+                padding: 24px 20px;
+                border-radius: 20px;
+            }
+
+            .form-row, .student-info-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% set request_type = request.args.get('type', 'leave') %}
+    {% set request_titles = {
+    'leave': 'Leave Request',
+    'permission': 'Permission Request',
+    'apology': 'Apology Submission',
+    'bonafide': 'Bonafide Certificate',
+    'od': 'On Duty Request',
+    'custom': 'Custom Request'
+    } %}
+    {% set request_icons = {
+    'leave': 'fa-calendar-times',
+    'permission': 'fa-id-badge',
+    'apology': 'fa-hand-paper',
+    'bonafide': 'fa-certificate',
+    'od': 'fa-briefcase',
+    'custom': 'fa-pen-to-square'
+    } %}
+
+    <div class="page-header">
+        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+        <h1><i class="fas {{ request_icons.get(request_type, 'fa-file-alt') }}"></i> {{ request_titles.get(request_type, 'Submit Request') }}</h1>
+        <p>Fill in the details below to submit your request</p>
+    </div>
+
+    <div class="content-wrapper">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="student-info">
+            <h3><i class="fas fa-user-circle text-blue-500"></i> Student Information</h3>
+            <div class="student-info-grid">
+                <div class="info-item">
+                    <span class="info-label">Name</span>
+                    <span class="info-value">{{ session.name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Register Number</span>
+                    <span class="info-value">{{ session.register_number }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Department</span>
+                    <span class="info-value">{{ session.department.title() }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Year</span>
+                    <span class="info-value">{{ session.student_type }}</span>
+                </div>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('main.unified_request') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="request_type" id="request_type" value="{{ request.args.get('type', 'leave') }}">
+
+            <!-- Common Fields -->
+            <div class="form-group">
+                <label for="student_name">Student Name *</label>
+                <input type="text" class="form-control" id="student_name" name="student_name" value="{{ session.name }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="department">Department *</label>
+                <input type="text" class="form-control" id="department" name="department"
+                    value="{{ session.department.title() }}" required>
+            </div>
+
+            <!-- Leave Request Fields -->
+            <div class="field-group active" id="leave-fields">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="from_date">From Date *</label>
+                        <input type="date" class="form-control" id="from_date" name="from_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="to_date">To Date *</label>
+                        <input type="date" class="form-control" id="to_date" name="to_date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reason">Reason for Leave *</label>
+                    <textarea class="form-control" id="reason" name="reason" rows="4"
+                        placeholder="Please provide detailed reason for your leave request"></textarea>
+                </div>
+            </div>
+
+            <!-- Permission Fields -->
+            <div class="field-group" id="permission-fields">
+                <div class="form-group">
+                    <label for="custom_subject">Subject (Optional)</label>
+                    <input type="text" class="form-control" id="custom_subject" name="custom_subject"
+                        placeholder="e.g., Mathematics, Physics Lab">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="permission_from_date">From Date *</label>
+                        <input type="date" class="form-control" id="permission_from_date" name="permission_from_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="permission_to_date">To Date *</label>
+                        <input type="date" class="form-control" id="permission_to_date" name="permission_to_date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="supporting_docs">Supporting Documents (if any)</label>
+                    <input type="file" class="form-control" id="supporting_docs" name="supporting_docs"
+                        accept=".pdf,.jpg,.jpeg,.png">
+                    <small class="text-muted">Upload medical certificate or other supporting documents</small>
+                </div>
+                <div class="form-group">
+                    <label for="permission_reason">Reason *</label>
+                    <textarea class="form-control" id="permission_reason" name="permission_reason" rows="4"
+                        placeholder="Please provide detailed reason for permission"></textarea>
+                </div>
+            </div>
+
+            <!-- Apology Fields -->
+            <div class="field-group" id="apology-fields">
+                <div class="form-group">
+                    <label for="apology_date">Date of Absence *</label>
+                    <input type="date" class="form-control" id="apology_date" name="apology_date">
+                </div>
+                <div class="form-group">
+                    <label for="apology_reason">Reason for Absence *</label>
+                    <textarea class="form-control" id="apology_reason" name="apology_reason" rows="4"
+                        placeholder="Please provide detailed reason for your absence"></textarea>
+                </div>
+            </div>
+
+            <!-- Bonafide Fields -->
+            <div class="field-group" id="bonafide-fields">
+                <div class="form-group">
+                    <label for="bonafide_purpose">Purpose *</label>
+                    <select class="form-control" id="bonafide_purpose" name="bonafide_purpose">
+                        <option value="">Select Purpose</option>
+                        <option value="Bank Account">Bank Account Opening</option>
+                        <option value="Scholarship">Scholarship Application</option>
+                        <option value="Government Scheme">Government Scheme</option>
+                        <option value="Travel">Travel Purpose</option>
+                        <option value="Address Proof">Address Proof</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bonafide_details">Additional Details</label>
+                    <textarea class="form-control" id="bonafide_details" name="bonafide_details" rows="4"
+                        placeholder="Provide any additional details required for the certificate"></textarea>
+                </div>
+            </div>
+
+            <!-- On Duty Fields -->
+            <div class="field-group" id="od-fields">
+                <div class="form-group">
+                    <label for="od_event">Event/Activity *</label>
+                    <input type="text" class="form-control" id="od_event" name="od_event"
+                        placeholder="e.g., College Sports Meet, Cultural Program">
+                </div>
+                <div class="form-group">
+                    <label for="od_organization">Organizing Body *</label>
+                    <input type="text" class="form-control" id="od_organization" name="od_organization"
+                        placeholder="e.g., Sports Department, Cultural Committee">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="od_from_date">From Date *</label>
+                        <input type="date" class="form-control" id="od_from_date" name="od_from_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="od_to_date">To Date *</label>
+                        <input type="date" class="form-control" id="od_to_date" name="od_to_date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="od_reason">Details of Participation *</label>
+                    <textarea class="form-control" id="od_reason" name="od_reason" rows="4"
+                        placeholder="Describe your role and participation in the event"></textarea>
+                </div>
+            </div>
+
+            <!-- Custom Request Fields -->
+            <div class="field-group" id="custom-fields">
+                <div class="form-group">
+                    <label for="custom_title">Custom Request Title *</label>
+                    <input type="text" class="form-control" id="custom_title" name="custom_title"
+                        placeholder="e.g., Hostel Room Change, Bus Pass Issue, etc.">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="custom_from_date">From Date (Optional)</label>
+                        <input type="date" class="form-control" id="custom_from_date" name="custom_from_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom_to_date">To Date (Optional)</label>
+                        <input type="date" class="form-control" id="custom_to_date" name="custom_to_date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="custom_reason">Detailed Description of Request *</label>
+                    <textarea class="form-control" id="custom_reason" name="custom_reason" rows="4"
+                        placeholder="Please describe your specific request in detail so the approving authority can consider it"></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Submit Application
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Function to activate request type
+        function activateRequestType(type) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.request-type-btn').forEach(b => b.classList.remove('active'));
+            // Add active class to button with matching type if it exists
+            const btn = document.querySelector(`[data-type="${type}"]`);
+            if (btn) btn.classList.add('active');
+
+            // Hide all field groups
+            document.querySelectorAll('.field-group').forEach(group => group.classList.remove('active'));
+
+            // Show relevant field group
+            const fieldGroup = document.getElementById(type + '-fields');
+            if (fieldGroup) fieldGroup.classList.add('active');
+
+            const reqTypeInput = document.getElementById('request_type');
+            if (reqTypeInput) reqTypeInput.value = type;
+        }
+
+        // Request type selector functionality
+        document.querySelectorAll('.request-type-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const type = this.dataset.type;
+                activateRequestType(type);
+
+                // Update form action based on type
+                const form = document.querySelector('form');
+                if (form) form.action = "{{ url_for('main.unified_request') }}";
+                if (typeof checkLeaveLimitWarning === 'function') checkLeaveLimitWarning();
+            });
+        });
+
+        // Initialize with URL parameter or default to 'leave'
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestType = urlParams.get('request_type') || urlParams.get('type') || 'leave';
+            activateRequestType(requestType);
+        });
+
+        // Set minimum date to today for all date inputs
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.min = today;
+        });
+
+        // Fetch date-range leave limit rules from server and cache them
+        let _cachedLeaveRules = null;
+        async function fetchLeaveRules() {
+            if (_cachedLeaveRules !== null) return _cachedLeaveRules;
+            try {
+                const resp = await fetch('/get_leave_rules');
+                _cachedLeaveRules = await resp.json();
+            } catch (e) {
+                _cachedLeaveRules = [];
+            }
+            return _cachedLeaveRules;
+        }
+
+        const MONTH_NAMES = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+
+        // Check leave days against date-range rules and show warnings
+        async function checkLeaveLimitWarning() {
+            const requestType = document.getElementById('request_type').value || (new URLSearchParams(window.location.search).get('type')) || 'leave';
+            if (requestType !== 'leave') {
+                let existingWarning = document.getElementById('leave-limit-warning');
+                if (existingWarning) existingWarning.remove();
+                return;
+            }
+
+            const fromDateVal = document.getElementById('from_date').value;
+            const toDateVal = document.getElementById('to_date').value;
+
+            let existingWarning = document.getElementById('leave-limit-warning');
+            if (existingWarning) existingWarning.remove();
+
+            if (fromDateVal && toDateVal) {
+                const fromDate = new Date(fromDateVal);
+                const toDate = new Date(toDateVal);
+
+                if (fromDate <= toDate) {
+                    const rules = await fetchLeaveRules();
+                    if (!rules || rules.length === 0) return;
+
+                    // Collect all requested dates
+                    let requestedDates = [];
+                    let current = new Date(fromDate);
+                    while (current <= toDate) {
+                        requestedDates.push({ month: current.getMonth() + 1, day: current.getDate() });
+                        current.setDate(current.getDate() + 1);
+                    }
+
+                    // Check each rule
+                    let warnings = [];
+                    for (let rule of rules) {
+                        let daysInRule = requestedDates.filter(d => d.month === rule.month && d.day >= rule.from_day && d.day <= rule.to_day).length;
+                        if (daysInRule > rule.max_days) {
+                            warnings.push(`${MONTH_NAMES[rule.month]} ${rule.from_day}–${rule.to_day} (${rule.max_days} day${rule.max_days !== 1 ? 's' : ''} max)`);
+                        }
+                    }
+
+                    if (warnings.length > 0) {
+                        const warningHtml = `<div id="leave-limit-warning" class="alert alert-warning" style="background: #fff3cd; color: #856404; border: 2px solid #ffeeba; margin-top: 15px; padding: 15px; border-radius: 8px;"><strong>Warning:</strong> Your request exceeds the limit for: ${warnings.join(', ')}. This will be blocked.</div>`;
+                        const leaveFields = document.getElementById('leave-fields');
+                        if (leaveFields) leaveFields.insertAdjacentHTML('beforeend', warningHtml);
+                    }
+                }
+            }
+        }
+
+        const fromDateEl = document.getElementById('from_date');
+        const toDateEl = document.getElementById('to_date');
+        if (fromDateEl) fromDateEl.addEventListener('change', checkLeaveLimitWarning);
+        if (toDateEl) toDateEl.addEventListener('change', checkLeaveLimitWarning);
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const requestType = document.getElementById('request_type').value;
+            let isValid = true;
+
+            // Clear previous error styling
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.style.borderColor = '#e1e5e9';
+            });
+
+            // Validate based on request type
+            if (requestType === 'leave') {
+                const fromDate = document.getElementById('from_date').value;
+                const toDate = document.getElementById('to_date').value;
+                const reason = document.getElementById('reason').value;
+
+                if (!fromDate || !toDate || !reason.trim()) {
+                    isValid = false;
+                    if (!fromDate) document.getElementById('from_date').style.borderColor = '#dc3545';
+                    if (!toDate) document.getElementById('to_date').style.borderColor = '#dc3545';
+                    if (!reason.trim()) document.getElementById('reason').style.borderColor = '#dc3545';
+                }
+            } else if (requestType === 'permission') {
+                const fromDate = document.getElementById('permission_from_date').value;
+                const toDate = document.getElementById('permission_to_date').value;
+                const reason = document.getElementById('permission_reason').value;
+
+                if (!fromDate || !toDate || !reason.trim()) {
+                    isValid = false;
+                    if (!fromDate) document.getElementById('permission_from_date').style.borderColor = '#dc3545';
+                    if (!toDate) document.getElementById('permission_to_date').style.borderColor = '#dc3545';
+                    if (!reason.trim()) document.getElementById('permission_reason').style.borderColor = '#dc3545';
+                }
+            } else if (requestType === 'apology') {
+                const date = document.getElementById('apology_date').value;
+                const reason = document.getElementById('apology_reason').value;
+
+                if (!date || !reason.trim()) {
+                    isValid = false;
+                    if (!date) document.getElementById('apology_date').style.borderColor = '#dc3545';
+                    if (!reason.trim()) document.getElementById('apology_reason').style.borderColor = '#dc3545';
+                }
+            } else if (requestType === 'bonafide') {
+                const purpose = document.getElementById('bonafide_purpose').value;
+
+                if (!purpose) {
+                    isValid = false;
+                    document.getElementById('bonafide_purpose').style.borderColor = '#dc3545';
+                }
+            } else if (requestType === 'od') {
+                const event = document.getElementById('od_event').value;
+                const organization = document.getElementById('od_organization').value;
+                const fromDate = document.getElementById('od_from_date').value;
+                const toDate = document.getElementById('od_to_date').value;
+                const reason = document.getElementById('od_reason').value;
+
+                if (!event || !organization || !fromDate || !toDate || !reason.trim()) {
+                    isValid = false;
+                    if (!event) document.getElementById('od_event').style.borderColor = '#dc3545';
+                    if (!organization) document.getElementById('od_organization').style.borderColor = '#dc3545';
+                    if (!fromDate) document.getElementById('od_from_date').style.borderColor = '#dc3545';
+                    if (!toDate) document.getElementById('od_to_date').style.borderColor = '#dc3545';
+                    if (!reason.trim()) document.getElementById('od_reason').style.borderColor = '#dc3545';
+                }
+            } else if (requestType === 'custom') {
+                const title = document.getElementById('custom_title').value;
+                const reason = document.getElementById('custom_reason').value;
+
+                if (!title.trim() || !reason.trim()) {
+                    isValid = false;
+                    if (!title.trim()) document.getElementById('custom_title').style.borderColor = '#dc3545';
+                    if (!reason.trim()) document.getElementById('custom_reason').style.borderColor = '#dc3545';
+                }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields for the selected request type.');
+            }
+        });
+    </script>
+    </div>
+    <script src="{{ url_for('static', filename='mobile-responsive.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Status - MEF Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a1a1a;
+            font-weight: 400;
+            line-height: 1.6;
+            letter-spacing: -0.01em;
+            overflow-x: hidden;
+        }
+
+        .status-page {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .status-container {
+            background: transparent;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        .status-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .status-header h1 {
+            color: #1a1a1a;
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-header p {
+            color: #555;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-header .back-link {
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .status-flash {
+            margin-bottom: 30px;
+        }
+
+        .status-alert {
+            background: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #2e7d32;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-filter {
+            background: #ffffff;
+            border: 1px solid #e5e5e7;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .status-filter-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .status-filter-header h3 {
+            color: #1a1a1a;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-filter-header p {
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-filter-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .status-filter-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .status-filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .status-filter-group label {
+            color: #86868b;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        .status-filter-group input,
+        .status-filter-group select {
+            padding: 8px 10px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1d1d1f;
+            font-size: 13px;
+            font-weight: 400;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+            width: 100%;
+        }
+
+        .status-filter-group input:focus,
+        .status-filter-group select:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .status-filter-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .status-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        .status-btn-primary {
+            background: #007aff;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+        }
+
+        .status-btn-primary:hover {
+            background: #0051d5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .status-btn-secondary {
+            background: #f5f5f7;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+        }
+
+        .status-btn-secondary:hover {
+            background: #e8e8ed;
+            transform: translateY(-1px);
+        }
+
+        .status-results-summary {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .status-results-summary p {
+            color: #555;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-requests-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e7;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .status-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: #007aff;
+        }
+
+        .status-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .status-card-id {
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-badge {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            line-height: 1.2;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #f57c00;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-approved {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status-mentor-approved,
+        .status-advisor-approved {
+            background: rgba(33, 150, 243, 0.2);
+            color: #1976d2;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .status-rejected {
+            background: rgba(244, 67, 54, 0.2);
+            color: #c62828;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .status-card-content {
+            display: grid;
+            gap: 12px;
+        }
+
+        .status-card-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-card-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-card-value {
+            color: #1a1a1a;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: right;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .status-no-results i {
+            font-size: 64px;
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        .status-no-results h3 {
+            color: #666;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-no-results p {
+            color: #888;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 12px 18px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.02em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .pagination a:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination .current {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(75, 108, 183, 0.3);
+        }
+
+        .status-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .status-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .status-modal-header {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-modal-header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .status-modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .status-modal-body {
+            padding: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .status-full-item {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .status-full-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-full-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-full-value {
+            color: #1a1a1a;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .status-reason {
+            background: rgba(75, 108, 183, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(75, 108, 183, 0.2);
+            line-height: 1.5;
+        }
+
+        .btn-show-more {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-show-more:hover {
+            background: #0051d5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .status-page {
+                padding: 20px 15px;
+            }
+
+            .status-container {
+                padding: 30px 20px;
+            }
+
+            .status-header h1 {
+                font-size: 36px;
+            }
+
+            .status-filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            .status-requests-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-full-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .pagination a,
+            .pagination span {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }
+
+        .status-tick {
+            margin-left: 10px;
+            font-size: 1.2em;
+            vertical-align: middle;
+        }
+
+        .single-tick {
+            opacity: 0.7;
+        }
+
+        .double-tick {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="status-page">
+        <div class="status-container">
+            <div class="status-header">
+                <h1><i class="fas fa-clipboard-list"></i> Request Status</h1>
+                <p>Track your leave requests and their approval status</p>
+                <div class="back-link">
+                    <a href="{{ url_for('main.dashboard') }}" class="status-btn status-btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="status-flash">
+                {% for message in messages %}
+                <div class="status-alert"><i class="fas fa-check-circle"></i> {{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <section class="status-filter" aria-label="Search and filter">
+                <div class="status-filter-header">
+                    <h3><i class="fas fa-filter"></i> Search & Filter</h3>
+                    <p>Find your requests quickly</p>
+                </div>
+                <form method="GET" action="{{ url_for('main.status') }}" class="status-filter-form">
+                    <div class="status-filter-row">
+                        <div class="status-filter-group">
+                            <label for="search"><i class="fas fa-search"></i> Search</label>
+                            <input type="text" id="search" name="search" placeholder="Search by type or reason..."
+                                value="{{ search_query if search_query else '' }}">
+                        </div>
+                        <div class="status-filter-group">
+                            <label for="date"><i class="fas fa-calendar-alt"></i> Date</label>
+                            <input type="date" id="date" name="date" value="{{ date_filter if date_filter else '' }}">
+                        </div>
+                        <div class="status-filter-group">
+                            <label for="status"><i class="fas fa-info-circle"></i> Status</label>
+                            <select id="status" name="status">
+                                <option value="">All status</option>
+                                <option value="Pending" {% if status_filter=='Pending' %}selected{% endif %}>Pending
+                                </option>
+                                <option value="Approved" {% if status_filter=='Approved' %}selected{% endif %}>Approved
+                                </option>
+                                <option value="Rejected" {% if status_filter=='Rejected' %}selected{% endif %}>Rejected
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="status-filter-actions">
+                        <button type="submit" class="status-btn status-btn-primary">
+                            <i class="fas fa-search"></i> Apply Filter
+                        </button>
+                        <a href="{{ url_for('main.status') }}" class="status-btn status-btn-secondary">
+                            <i class="fas fa-times"></i> Clear Filter
+                        </a>
+                    </div>
+                </form>
+            </section>
+
+            <div class="status-results-summary">
+                <p>
+                    Showing {{ pagination.total }} result(s)
+                    {% if search_query %} for "{{ search_query }}"{% endif %}
+                    {% if date_filter %} on {{ date_filter }}{% endif %}
+                    {% if status_filter %} with status "{{ status_filter }}"{% endif %}
+                </p>
+            </div>
+
+            {% if requests %}
+            <div class="status-requests-grid">
+                {% for req in requests %}
+                <article class="status-card request-card-item" data-index="{{ loop.index0 }}"
+                    {% if loop.index > 1 %}hidden{% endif %}
+                    onclick="showRequestDetails(this.dataset.index)" tabindex="0"
+                    aria-label="View request #{{ req[0] }} details">
+                    <div class="status-card-header">
+                        <div class="status-card-id">
+                            <i class="fas fa-hashtag"></i> {{ req[0] }}
+                        </div>
+                        <span class="status-badge status-{{ req[6].lower().replace(' ', '-') }}">{{ req[6] }}</span>
+                        <span class="status-tick" title="{{ req[6] }}">
+                            {% if req[6] == 'Pending' %}
+                            <i class="fas fa-check single-tick" style="color:#888;"></i>
+                            {% elif req[6] == 'Mentor Approved' %}
+                            <i class="fas fa-check double-tick" style="color:#888;"></i>
+                            <i class="fas fa-check double-tick" style="color:#888; margin-left:-8px;"></i>
+                            {% elif req[6] == 'Advisor Approved' or req[6] == 'Approved' %}
+                            <i class="fas fa-check double-tick" style="color:#2196f3;"></i>
+                            <i class="fas fa-check double-tick" style="color:#2196f3; margin-left:-8px;"></i>
+                            {% elif req[6] == 'Rejected' or req[6] == 'Advisor Rejected' or req[6] == 'Mentor Rejected'
+                            %}
+                            <i class="fas fa-times-circle" style="color:#e53935;"></i>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="status-card-content">
+                        <div class="status-card-item">
+                            <span class="status-card-label"><i class="fas fa-tag"></i> Type</span>
+                            <span class="status-card-value">{{ req[2] }}</span>
+                        </div>
+                        <div class="status-card-item">
+                            <span class="status-card-label"><i class="fas fa-calendar-alt"></i> From</span>
+                            <span class="status-card-value">{{ req[4] }}</span>
+                        </div>
+                        <div class="status-card-item">
+                            <span class="status-card-label"><i class="fas fa-calendar-alt"></i> To</span>
+                            <span class="status-card-value">{{ req[5] }}</span>
+                        </div>
+                        <div class="status-card-item">
+                            <span class="status-card-label"><i class="fas fa-clock"></i> Updated</span>
+                            <span class="status-card-value">{{ req[10] if req[10] else 'N/A' }}</span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            <!-- Show More Button -->
+            <div id="showMoreContainer"
+                {% if requests|length <= 1 %}hidden{% endif %}
+                style="text-align: center; margin: 30px 0;">
+                <button id="showMoreBtn" class="btn-show-more">
+                    <i class="fas fa-chevron-down"></i> Show More
+                </button>
+                <p id="showingCount" style="color: #86868b; margin-top: 10px; font-size: 14px;">
+                    Showing <span id="currentCount">1</span> of {{ requests|length }} requests
+                </p>
+            </div>
+
+            <!-- Pagination -->
+            {% if pagination.total_pages > 1 %}
+            <nav class="pagination" aria-label="Pagination">
+                {% if pagination.has_prev %}
+                <a href="{{ url_for('main.status', page=pagination.prev_num, search=search_query, date=date_filter, status=status_filter) }}"
+                    aria-label="Previous page">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                {% endif %}
+
+                {% for page_num in range(1, pagination.total_pages + 1) %}
+                {% if page_num != pagination.page %}
+                <a
+                    href="{{ url_for('main.status', page=page_num, search=search_query, date=date_filter, status=status_filter) }}">{{
+                    page_num }}</a>
+                {% else %}
+                <span class="current">{{ page_num }}</span>
+                {% endif %}
+                {% endfor %}
+
+                {% if pagination.has_next %}
+                <a href="{{ url_for('main.status', page=pagination.next_num, search=search_query, date=date_filter, status=status_filter) }}"
+                    aria-label="Next page">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </nav>
+            {% endif %}
+            {% else %}
+            <div class="status-no-results">
+                <i class="fas fa-search"></i>
+                <h3>No Requests Found</h3>
+                <p>No leave requests match your current filters. Try adjusting your search criteria.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Modal for detailed view -->
+    <div id="status-modal" class="status-modal">
+        <div class="status-modal-content">
+            <div class="status-modal-header">
+                <h2 id="status-modal-title">Request Details</h2>
+                <button class="status-modal-close" onclick="closeModal()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="status-modal-body" class="status-modal-body">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden data for JavaScript -->
+    <script type="application/json" id="requests-data">{{ requests | tojson }}</script>
+
+    <script>
+        // Show More functionality
+        let currentlyShown = 1;
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const currentCountSpan = document.getElementById('currentCount');
+        const showMoreContainer = document.getElementById('showMoreContainer');
+
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', function () {
+                const allCards = document.querySelectorAll('.request-card-item');
+                const cardsToShow = Math.min(currentlyShown + 5, allCards.length);
+
+                for (let i = currentlyShown; i < cardsToShow; i++) {
+                    allCards[i].style.display = 'block';
+                }
+
+                currentlyShown = cardsToShow;
+                currentCountSpan.textContent = currentlyShown;
+
+                if (currentlyShown >= allCards.length) {
+                    showMoreContainer.style.display = 'none';
+                }
+            });
+        }
+
+        var requestsData = [];
+        try {
+            var dataElement = document.getElementById('requests-data');
+            if (dataElement && dataElement.textContent) {
+                requestsData = JSON.parse(dataElement.textContent);
+            }
+        } catch (e) {
+            console.error('Error parsing requests data:', e);
+        }
+
+        function showRequestDetails(index) {
+            var req = requestsData[parseInt(index)];
+            if (!req) return;
+            if (req[6] === 'Approved') {
+                window.open('/approved/' + req[0], '_blank');
+                return;
+            }
+            document.getElementById('status-modal-title').innerHTML = '<i class="fas fa-file-alt"></i> Request #' + req[0] + ' Details';
+            const body = document.getElementById('status-modal-body');
+            body.innerHTML = '' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-hashtag"></i> Request ID</div>' +
+                '<div class="status-full-value">#' + req[0] + '</div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-user"></i> Student Name</div>' +
+                '<div class="status-full-value">' + (req[8] || 'N/A') + '</div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-building"></i> Department</div>' +
+                '<div class="status-full-value">' + (req[9] || 'N/A') + '</div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-tag"></i> Leave Type</div>' +
+                '<div class="status-full-value">' + req[2] + '</div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-align-left"></i> Reason</div>' +
+                '<div class="status-full-value"><div class="status-reason">' + req[3] + '</div></div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-calendar-alt"></i> From Date</div>' +
+                '<div class="status-full-value">' + req[4] + '</div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-calendar-alt"></i> To Date</div>' +
+                '<div class="status-full-value">' + req[5] + '</div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-info-circle"></i> Status</div>' +
+                '<div class="status-full-value"><span class="status-badge status-' + req[6].toLowerCase().split(' ').join('-') + '">' + req[6] + '</span></div>' +
+                '</div>' +
+                '<div class="status-full-item">' +
+                '<div class="status-full-label"><i class="fas fa-clock"></i> Last Updated</div>' +
+                '<div class="status-full-value">' + (req[10] || 'Not updated yet') + '</div>' +
+                '</div>';
+            document.getElementById('status-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('status-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            var modal = document.getElementById('status-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Card keyboard navigation
+        document.querySelectorAll('.status-card').forEach(card => {
+            card.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    showRequestDetails(this.dataset.index);
+                }
+            });
+        });
+
+        // Check for show_request parameter on load
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const showRequestId = urlParams.get('show_request');
+
+            if (showRequestId && requestsData && requestsData.length > 0) {
+                // Find the index of the request with matching ID
+                const reqIndex = requestsData.findIndex(req => req[0].toString() === showRequestId);
+
+                if (reqIndex !== -1) {
+                    // Open the modal for this request
+                    showRequestDetails(reqIndex);
+
+                    // Optionally clean up the URL without a page reload
+                    const url = new URL(window.location);
+                    url.searchParams.delete('show_request');
+                    window.history.replaceState({}, document.title, url);
+                }
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='mobile-responsive.js') }}"></script>
+</body>
+
+</html>

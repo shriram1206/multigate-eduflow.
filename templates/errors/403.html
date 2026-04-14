@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Access Forbidden | MEF Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffa726 0%, #ff7043 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .error-container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+        .error-code {
+            font-size: 120px;
+            font-weight: 900;
+            color: #ffa726;
+            margin: 0;
+            line-height: 1;
+        }
+        .error-title {
+            font-size: 28px;
+            color: #333;
+            margin: 20px 0 10px 0;
+        }
+        .error-message {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .btn-home {
+            background: linear-gradient(135deg, #ffa726, #ff7043);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 167, 38, 0.4);
+        }
+        .btn-login {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .btn-login:hover {
+            background: #218838;
+            transform: translateY(-3px);
+        }
+        .icon {
+            font-size: 80px;
+            color: #ffa726;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="icon">🚫</div>
+        <h1 class="error-code">403</h1>
+        <h2 class="error-title">Access Forbidden</h2>
+        <p class="error-message">
+            You don't have permission to access this resource. 
+            Please check your credentials or contact your administrator if you believe this is an error.
+        </p>
+        <div>
+            <a href="/" class="btn-home">🏠 Home</a>
+            {% if not session.user_id %}
+            <a href="/login" class="btn-login">🔑 Login</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

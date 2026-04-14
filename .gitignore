@@ -1,0 +1,97 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Flask
+instance/
+.webassets-cache
+*.db
+
+# Backup and utility files
+app_backup/
+app_modular.py
+convert_md_to_pdf.py
+extract_pdf.py
+init_db.py
+reset_db.py
+update_db.py
+run_mobile.py
+setup_firewall.ps1
+error.txt
+
+# Project documentation (internal)
+COLLEGE_PROJECT_REPORT.md
+ENHANCED_TODO.md
+IMPLEMENTATION_REVIEW.md
+MOBILE_TESTING_GUIDE.md
+PROJECT_COMPARISON.md
+PROJECT_OVERVIEW_REPORT.md
+REPORT_COMPLETION_SUMMARY.md
+REPORT_STATUS_AND_NEXT_STEPS.md
+SECURITY_ARCHITECTURE.md
+VIBE_PRO_GUIDELINES.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment variables
+.env
+.flaskenv
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# CI/CD & Testing Artifacts
+coverage.xml
+htmlcov/
+.coverage
+load_test_results*
+bandit-report.json
+pytest.ini
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Build & Distribution
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Load test results
+locustfile_stats.csv
+locustfile_failures.csv

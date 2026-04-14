@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Request Form - MEF Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            height: 40px;
+            width: auto;
+            opacity: 0.9;
+            filter: brightness(0) invert(1);
+            border-radius: 10px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .form-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .form-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        /* Address Section Styles */
+        .address-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .address-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .from-section,
+        .to-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .from-section h3,
+        .to-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .address-content input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            /* Prevents zoom on iOS */
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            /* Remove iOS styling */
+            appearance: none;
+            /* Standard property */
+        }
+
+        .address-content input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .college-name,
+        .fixed-text {
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            color: #495057;
+            font-weight: 500;
+            margin-bottom: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .respected-text {
+            padding: 10px 15px;
+            background: #e8f2ff;
+            border-radius: 6px;
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 15px;
+            border-left: 3px solid #667eea;
+            font-style: italic;
+        }
+
+        .respected-section {
+            margin-bottom: 30px;
+            padding: 15px 25px;
+        }
+
+        .subject-indent {
+            margin-top: 20px;
+            margin-left: 40px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .subject-indent label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .subject-indent input,
+        .subject-indent select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .subject-indent input:focus,
+        .subject-indent select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .subject-content select,
+        .subject-content input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            /* Prevents zoom on iOS */
+            background: white;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .subject-content select:focus,
+        .subject-content input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .duration-indent,
+        .message-indent {
+            margin-top: 15px;
+            margin-left: 40px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .duration-indent label,
+        .message-indent label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .date-range-indent {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .date-range-indent input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .date-range-indent input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .date-separator-small {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-indent textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .message-indent textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .message-section {
+            margin-bottom: 30px;
+            padding: 15px 25px;
+        }
+
+        .message-section label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .message-section textarea {
+            width: 100%;
+            min-height: 180px;
+            /* Increased from 120px */
+            padding: 20px 25px;
+            /* Increased padding */
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 16px;
+            /* Prevents zoom on iOS */
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            resize: vertical;
+            font-family: inherit;
+            margin-bottom: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            line-height: 1.6;
+            /* Better line spacing */
+        }
+
+        .message-section textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .form-container {
+                margin: 0;
+                border-radius: 15px;
+                max-width: 100%;
+            }
+
+            .form-content {
+                padding: 15px;
+            }
+
+            .form-header {
+                padding: 20px 15px;
+            }
+
+            .form-header h2 {
+                font-size: 1.4rem;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .form-header p {
+                font-size: 0.9rem;
+            }
+
+            .address-section {
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+
+            .from-section,
+            .to-section {
+                padding: 15px;
+            }
+
+            .from-section h3,
+            .to-section h3 {
+                font-size: 1rem;
+            }
+
+            .address-content input {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .respected-section {
+                padding: 10px 15px;
+                margin-bottom: 20px;
+            }
+
+            .subject-indent,
+            .duration-indent,
+            .message-indent {
+                margin-left: 15px;
+                padding: 12px;
+            }
+
+            .subject-indent label,
+            .duration-indent label,
+            .message-indent label {
+                font-size: 0.8rem;
+            }
+
+            .subject-content select,
+            .subject-content input {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .message-section {
+                padding: 10px 15px;
+                margin-bottom: 20px;
+            }
+
+            .message-section textarea {
+                padding: 15px 18px;
+                /* Increased padding for mobile */
+                min-height: 150px;
+                /* Increased from 100px */
+                font-size: 0.9rem;
+            }
+
+            .date-range-indent {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .date-separator-small {
+                order: 2;
+                margin: 8px 0;
+                font-size: 1rem;
+                font-weight: bold;
+                color: #667eea;
+            }
+
+            .date-range-indent input {
+                padding: 12px 15px;
+                font-size: 1rem;
+                width: 100%;
+                max-width: 200px;
+            }
+
+            .submit-section {
+                margin-top: 25px;
+                padding-top: 20px;
+            }
+
+            .submit-btn {
+                padding: 15px 40px;
+                font-size: 1rem;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .back-btn {
+                top: 15px;
+                left: 15px;
+                padding: 10px;
+            }
+
+            .college-name,
+            .fixed-text {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .respected-text {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-header h2 {
+                font-size: 1.2rem;
+            }
+
+            .form-content {
+                padding: 12px;
+            }
+
+            .address-section {
+                padding: 12px;
+            }
+
+            .from-section,
+            .to-section {
+                padding: 12px;
+            }
+
+            .subject-indent,
+            .duration-indent,
+            .message-indent {
+                margin-left: 8px;
+                padding: 12px;
+            }
+
+            .respected-section {
+                padding: 8px 12px;
+            }
+
+            .message-section {
+                padding: 8px 12px;
+            }
+
+            .date-range-indent input {
+                padding: 14px 16px;
+                font-size: 1rem;
+                max-width: 180px;
+            }
+
+            .date-separator-small {
+                font-size: 1.1rem;
+                margin: 10px 0;
+            }
+
+            .submit-btn {
+                padding: 12px 30px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>
+                <i class="fas fa-file-alt"></i>
+                Leave Request Form
+            </h2>
+            <p>Submit your leave application with all required details</p>
+        </div>
+
+        <div class="form-content">
+            <form id="leaveForm" method="POST" action="{{ url_for('main.unified_request') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <!-- From/To Section -->
+                <div class="address-section">
+                    <div class="address-grid">
+                        <div class="from-section">
+                            <h3><i class="fas fa-user-circle"></i> From</h3>
+                            <div class="address-content">
+                                <input type="text" placeholder="Student Name" name="student_name" required>
+                                <select name="year" required
+                                    style="width:100%;padding:12px 15px;margin-bottom:10px;border:1px solid #e0e6ed;border-radius:8px;font-size:16px;background:white;transition:all 0.3s ease;-webkit-appearance:none;appearance:none;">
+                                    <option value="">Select Year</option>
+                                    <option value="I Year">I Year</option>
+                                    <option value="II Year">II Year</option>
+                                    <option value="III Year">III Year</option>
+                                    <option value="IV Year">IV Year</option>
+                                </select>
+                                <select name="department" required
+                                    style="width:100%;padding:12px 15px;margin-bottom:10px;border:1px solid #e0e6ed;border-radius:8px;font-size:16px;background:white;transition:all 0.3s ease;-webkit-appearance:none;appearance:none;">
+                                    <option value="">Select Department</option>
+                                    <option value="CSE">Computer Science and Engineering (CSE)</option>
+                                    <option value="IT">Information Technology (IT)</option>
+                                    <option value="ECE">Electronics and Communication Engineering (ECE)</option>
+                                    <option value="EEE">Electrical and Electronics Engineering (EEE)</option>
+                                    <option value="MECH">Mechanical Engineering (MECH)</option>
+                                    <option value="CIVIL">Civil Engineering (CIVIL)</option>
+                                    <option value="AI&DS">Artificial Intelligence and Data Science (AI&DS)</option>
+                                    <option value="BIO">Biomedical Engineering (BIO)</option>
+                                    <option value="BIOTECH">Biotechnology Engineering (BIOTECH)</option>
+                                    <option value="MBA">Master of Business Administration (MBA)</option>
+                                </select>
+                                <div class="college-name">Selvam College of Technology</div>
+                            </div>
+                        </div>
+
+                        <!-- Updation field (readonly, auto-filled if editing) -->
+                        {% if updation %}
+                        <div class="form-group">
+                            <label for="updation">Last Updated:</label>
+                            <input type="text" id="updation" name="updation" value="{{ updation }}" readonly>
+                        </div>
+                        {% endif %}
+
+                        <div class="to-section">
+                            <h3><i class="fas fa-user-tie"></i> To</h3>
+                            <div class="address-content">
+                                <div class="fixed-text">Head of the Department</div>
+                                <div class="fixed-text">Selvam College of Technology</div>
+                                <div class="fixed-text">Namakkal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Respected Sir/Madam Section -->
+                <div class="respected-section">
+                    <div class="respected-text">Respected Sir/Madam,</div>
+
+                    <!-- Subject Section with leave type -->
+                    <div class="subject-indent">
+                        <label for="leaveTypeSubject">
+                            <i class="fas fa-bookmark"></i> Subject:
+                        </label>
+                        <div class="subject-content">
+                            <select id="leaveTypeSubject" name="type" required onchange="updateSubject()">
+                                <option value="">Select Leave Type</option>
+                                <option value="leave">Medical Leave</option>
+                                <option value="permission">Permission Request</option>
+                                <option value="emergency">Emergency Leave</option>
+                                <option value="festival">Festival Leave</option>
+                                <option value="family">Family Function</option>
+                                <option value="other">Other</option>
+                            </select>
+
+                            <!-- Permission specific dropdown -->
+                            <select id="permissionSubject" name="permissionSubject"
+                                style="display: none; margin-top: 10px; width: 100%; padding: 12px 15px; border: 1px solid #e0e6ed; border-radius: 8px; font-size: 16px; background: white;">
+                                <option value="">Select Permission Type</option>
+                                <option value="late_arrival">Permission for Late Arrival</option>
+                                <option value="early_departure">Permission for Early Departure</option>
+                                <option value="class_absence">Permission for Class Absence</option>
+                                <option value="exam_absence">Permission for Exam Absence</option>
+                                <option value="lab_absence">Permission for Lab Absence</option>
+                                <option value="meeting_attendance">Permission to Attend Meeting</option>
+                                <option value="interview_attendance">Permission to Attend Interview</option>
+                                <option value="medical_checkup">Permission for Medical Checkup</option>
+                                <option value="personal_work">Permission for Personal Work</option>
+                                <option value="other_permission">Other Permission</option>
+                            </select>
+
+                            <input type="text" id="customSubject" name="customSubject"
+                                placeholder="Enter custom subject..." style="display: none; margin-top: 10px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Body Section -->
+                <div class="message-section">
+                    <label for="reason">
+                        <i class="fas fa-comment-alt"></i> Message:
+                    </label>
+
+                    <!-- Editable Message Template -->
+                    <textarea id="reason" name="reason" required>I am [Your Name], pursuing [Year] - [Department], and a day scholar at our institution.
+I was on leave on the mentioned dates due to [Reason].
+
+So kindly give me permission to take leave.
+
+Thanking you</textarea>
+
+                    <!-- Leave Duration Section with indent and small size -->
+                    <div class="duration-indent">
+                        <label>
+                            <i class="fas fa-calendar-alt"></i> Leave Duration:
+                        </label>
+                        <div class="date-range-indent">
+                            <div>
+                                <input type="date" id="fromDate" name="from_date" required>
+                            </div>
+                            <div class="date-separator-small">to</div>
+                            <div>
+                                <input type="date" id="toDate" name="to_date" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn">
+                        Submit Application
+                        <div class="loading"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form submission handler
+        document.getElementById('leaveForm').addEventListener('submit', function (e) {
+            const submitBtn = document.querySelector('.submit-btn');
+            const loading = document.querySelector('.loading');
+
+            // Show loading animation
+            loading.style.display = 'inline-block';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.disabled = true;
+        });
+
+        // Back button handler
+        function goBack() {
+            if (confirm('Are you sure you want to go back? Any unsaved data will be lost.')) {
+                window.location.href = "{{ url_for('main.dashboard') }}";
+            }
+        }
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('fromDate').min = today;
+        document.getElementById('toDate').min = today;
+
+        // Update to date minimum when from date changes
+        document.getElementById('fromDate').addEventListener('change', function () {
+            document.getElementById('toDate').min = this.value;
+        });
+
+        // Check leave days and show warning if more than 2 days in a calendar month
+        function checkLeaveLimitWarning() {
+            const requestType = document.getElementById('leaveTypeSubject').value;
+            if (requestType !== 'leave') {
+                let existingWarning = document.getElementById('leave-limit-warning');
+                if (existingWarning) existingWarning.remove();
+                return;
+            }
+
+            const fromDateVal = document.getElementById('fromDate').value;
+            const toDateVal = document.getElementById('toDate').value;
+
+            // Remove existing warning if any
+            let existingWarning = document.getElementById('leave-limit-warning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
+
+            if (fromDateVal && toDateVal) {
+                const fromDate = new Date(fromDateVal);
+                const toDate = new Date(toDateVal);
+
+                if (fromDate <= toDate) {
+                    // Calculate days per month
+                    let daysPerMonth = {};
+                    let current = new Date(fromDate);
+
+                    while (current <= toDate) {
+                        let monthKey = current.getFullYear() + '-' + (current.getMonth() + 1);
+                        daysPerMonth[monthKey] = (daysPerMonth[monthKey] || 0) + 1;
+                        current.setDate(current.getDate() + 1);
+                    }
+
+                    let limitExceeded = false;
+                    for (let key in daysPerMonth) {
+                        if (daysPerMonth[key] > 2) {
+                            limitExceeded = true;
+                            break;
+                        }
+                    }
+
+                    if (limitExceeded) {
+                        const warningHtml = '<div id="leave-limit-warning" class="alert alert-warning" style="background: #fff3cd; color: #856404; border: 2px solid #ffeeba; margin-top: 15px; padding: 15px; border-radius: 8px;"><strong>Warning:</strong> You have selected more than 2 days in a single calendar month. This request will be blocked if it exceeds your monthly limit.</div>';
+                        const durationIndent = document.querySelector('.duration-indent');
+                        if (durationIndent) {
+                            durationIndent.insertAdjacentHTML('beforeend', warningHtml);
+                        }
+                    }
+                }
+            }
+        }
+
+        const fromDateEl = document.getElementById('fromDate');
+        const toDateEl = document.getElementById('toDate');
+        if (fromDateEl) fromDateEl.addEventListener('change', checkLeaveLimitWarning);
+        if (toDateEl) toDateEl.addEventListener('change', checkLeaveLimitWarning);
+
+        // Handle subject type selection
+        function updateSubject() {
+            const selectElement = document.getElementById('leaveTypeSubject');
+            const customInput = document.getElementById('customSubject');
+            const permissionDropdown = document.getElementById('permissionSubject');
+
+            if (selectElement.value === 'other') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+                permissionDropdown.style.display = 'none';
+                permissionDropdown.required = false;
+            } else if (selectElement.value === 'permission') {
+                permissionDropdown.style.display = 'block';
+                permissionDropdown.required = true;
+                customInput.style.display = 'none';
+                customInput.required = false;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+                permissionDropdown.style.display = 'none';
+                permissionDropdown.required = false;
+            }
+
+            if (typeof checkLeaveLimitWarning === 'function') checkLeaveLimitWarning();
+        }
+
+        // Auto-replace placeholders in textarea (live update)
+        function updateReasonTemplate() {
+            const reasonTextarea = document.getElementById('reason');
+            const studentName = document.querySelector('[name="student_name"]')?.value || '';
+            const yearSel = document.querySelector('[name="year"]');
+            const year = yearSel ? yearSel.options[yearSel.selectedIndex].text : '';
+            const deptSel = document.querySelector('[name="department"]');
+            const department = deptSel ? deptSel.options[deptSel.selectedIndex].text : '';
+            let template = 'I am [Your Name], pursuing [Year] - [Department], and a day scholar at our institution.\nI was on leave on the mentioned dates due to [Reason].\n\nSo kindly give me permission to take leave.\n\nThanking you';
+            if (studentName) template = template.replace(/\[Your Name\]/g, studentName);
+            if (year && year !== 'Select Year') template = template.replace(/\[Year\]/g, year);
+            if (department && department !== 'Select Department') template = template.replace(/\[Department\]/g, department);
+            reasonTextarea.value = template;
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const studentNameField = document.querySelector('[name="student_name"]');
+            const yearField = document.querySelector('[name="year"]');
+            const departmentField = document.querySelector('[name="department"]');
+            if (studentNameField) studentNameField.addEventListener('input', updateReasonTemplate);
+            if (yearField) yearField.addEventListener('change', updateReasonTemplate);
+            if (departmentField) departmentField.addEventListener('change', updateReasonTemplate);
+        });
+    </script>
+    <script src="{{ url_for('static', filename='mobile-responsive.js') }}"></script>
+
+</html>

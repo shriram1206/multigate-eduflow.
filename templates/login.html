@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>MEF Portal Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background: #f5f5f7;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .main-container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            width: 100%;
+            max-width: none;
+            min-height: 100vh;
+            border: none;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .logo-section {
+            flex: 1;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .logo-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #1d1d1f;
+        }
+
+        .logo-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1d1d1f;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 1rem;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(1rem, 5vw, 3rem);
+            background: #ffffff;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 460px;
+            transform: translateY(-10%);
+            /* Antigravity Optical Centering */
+            margin-inline: auto;
+        }
+
+        .login-container h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .login-container p {
+            font-size: 1rem;
+            color: #86868b;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        form {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 1rem;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            color: #1d1d1f;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            margin-bottom: 0;
+            padding-right: 50px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #86868b;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 1.1rem;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: #1d1d1f;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background-color: #0071e3;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0077ed;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.95rem;
+            color: #86868b;
+        }
+
+        .register-link a {
+            color: #0071e3;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .register-link a:hover {
+            color: #0077ed;
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .alert-danger {
+            background-color: #fff5f5;
+            color: #c41e3a;
+            border: 1px solid #ffd4d9;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        @media (max-width: 1024px) {
+            .logo-section {
+                display: none;
+            }
+
+            .login-container {
+                min-height: 100vh;
+                padding: 40px 20px;
+            }
+
+            .login-container h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+
+            .login-container h2 {
+                font-size: 1.8rem;
+            }
+
+            form {
+                max-width: 100%;
+            }
+        }
+
+        /* Transitions for smooth light/dark shifts */
+        body,
+        .logo-section,
+        .login-container,
+        .logo-title,
+        .login-container h2,
+        label,
+        .logo-subtitle,
+        .login-container p,
+        input[type="text"],
+        input[type="password"],
+        .btn-primary,
+        .register-link,
+        .register-link a,
+        .toggle-password {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Login Section -->
+    <div class="login-container">
+        <div class="login-wrapper">
+            <h2>Welcome Back</h2>
+            <p>Sign in to continue to MultiGate EduFlow Portal</p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            {% if category == 'danger' or category == 'error' %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+            {% else %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label for="register_number">Registration Number:</label>
+                <input type="text" id="register_number" name="register_number" required
+                    placeholder="Enter your registration number" oninput="this.value = this.value.toUpperCase()">
+
+                <label for="password">Password:</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    <button type="button" class="toggle-password" onclick="togglePassword()"
+                        aria-label="Toggle password visibility">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+
+            <div class="register-link">
+                Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.form.submit();
+            }
+        });
+    </script>
+</body>
+
+</html>

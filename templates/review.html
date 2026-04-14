@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Under Review - MEF Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .review-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .review-header {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            height: 40px;
+            width: auto;
+            opacity: 0.9;
+            filter: brightness(0) invert(1);
+            border-radius: 10px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        .review-header i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .review-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .review-content {
+            padding: 40px;
+        }
+
+        .status-card {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+
+        .status-text {
+            font-size: 1.2rem;
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .application-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #f39c12;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .detail-value {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .timeline-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .timeline-icon.completed {
+            background: #27ae60;
+            color: white;
+        }
+
+        .timeline-icon.pending {
+            background: #f39c12;
+            color: white;
+        }
+
+        .timeline-icon.upcoming {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        .pdf-disabled {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .pdf-disabled i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .navigation-section {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .next-steps {
+            background: #e8f4f8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .next-steps h3 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-steps li i {
+            color: #17a2b8;
+            width: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .review-header h1 {
+                font-size: 2rem;
+            }
+
+            .review-content {
+                padding: 25px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="review-container">
+        <div class="review-header">
+            <i class="fas fa-clock"></i>
+            <h1>Application Submitted!</h1>
+            <p>Your leave request is under review</p>
+        </div>
+
+        <div class="review-content">
+            <div class="status-card">
+                <div class="status-icon">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="status-text">
+                    Pending Mentor Review
+                </div>
+                <small style="display: block; margin-top: 10px; color: #856404;">
+                    Your application has been successfully submitted and is awaiting approval.
+                </small>
+            </div>
+
+            <div class="application-details">
+                <h3 style="margin-bottom: 20px; color: #f39c12;">
+                    <i class="fas fa-info-circle"></i> Application Details
+                </h3>
+                {% if request_data %}
+                <div class="detail-row">
+                    <span class="detail-label">Application ID:</span>
+                    <span class="detail-value">LEV-2025-{{ request_data[0] }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Student Name:</span>
+                    <span class="detail-value">{{ request_data[8] or session.name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Department:</span>
+                    <span class="detail-value">{{ request_data[9] or session.department }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Leave Type:</span>
+                    <span class="detail-value">{{ request_data[2] }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value">{{ request_data[4] }} to {{ request_data[5] }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Reason:</span>
+                    <span class="detail-value">{{ request_data[3][:50] }}{% if request_data[3]|length > 50 %}...{% endif
+                        %}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Current Status:</span>
+                    <span class="detail-value" style="color: #f39c12;">{{ request_data[6] }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="timeline">
+                <h3 style="margin-bottom: 15px; color: #495057;">
+                    <i class="fas fa-list-ol"></i> Application Progress
+                </h3>
+                <div class="timeline-item">
+                    <div class="timeline-icon completed">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <strong>Application Submitted</strong>
+                        <small style="display: block; color: #6c757d;">Completed</small>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <strong>Under Mentor Review</strong>
+                        <small style="display: block; color: #6c757d;">In progress</small>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon upcoming">
+                        <i class="fas fa-thumbs-up"></i>
+                    </div>
+                    <div>
+                        <strong>Approval/Rejection</strong>
+                        <small style="display: block; color: #6c757d;">Pending</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pdf-disabled">
+                <i class="fas fa-file-pdf"></i>
+                <h4>PDF Download</h4>
+                <p>PDF download will be available after approval</p>
+                <small>You'll receive notification once your application is approved</small>
+            </div>
+
+            <div class="next-steps">
+                <h3>
+                    <i class="fas fa-lightbulb"></i> What's Next?
+                </h3>
+                <ul>
+                    <li>
+                        <i class="fas fa-user-tie"></i>
+                        Your mentor will review your application
+                    </li>
+                    <li>
+                        <i class="fas fa-bell"></i>
+                        Check your dashboard regularly for updates
+                    </li>
+                    <li>
+                        <i class="fas fa-download"></i>
+                        PDF download will be enabled after approval
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        Contact mentor if urgent questions arise
+                    </li>
+                </ul>
+            </div>
+
+            <div class="navigation-section">
+                <a href="{{ url_for('main.dashboard') }}" class="nav-btn">
+                    <i class="fas fa-home"></i> Go to Dashboard
+                </a>
+                <a href="{{ url_for('main.unified_request', type='leave') }}" class="nav-btn">
+                    <i class="fas fa-plus"></i> Submit Another
+                </a>
+                <a href="{{ url_for('main.status') }}" class="nav-btn">
+                    <i class="fas fa-list"></i> View All Status
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='mobile-responsive.js') }}"></script>
+</body>
+
+</html>

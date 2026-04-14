@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Applications Under Review - MEF Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Applications Under Review</h1>
+
+    {% if review_requests %}
+    <div class="requests-grid">
+        {% for req in review_requests %}
+        <div class="request-card review">
+            <div class="request-header">
+                <h3>{{ req[2] }}</h3>
+                <span class="status review">Under Review</span>
+                {% if req[9] and req[9] != 'Leave' %}
+                <div class="request-type-badge">{{ req[9] }}</div>
+                {% endif %}
+            </div>
+            <div class="request-details">
+                <p><strong>Duration:</strong> {{ req[4] }} to {{ req[5] }}</p>
+                <p><strong>Reason:</strong> {{ req[3] }}</p>
+                <p><strong>Submitted on:</strong> {{ req[9] if req[9] else 'N/A' }}</p>
+            </div>
+            <div class="request-actions">
+                <a href="{{ url_for('main.status') }}" class="btn btn-warning">View Status</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-requests">
+        <p>No applications under review found.</p>
+        <a href="{{ url_for('main.unified_request', type='leave') }}" class="btn btn-primary">Submit New Request</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
