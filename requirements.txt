@@ -14,6 +14,9 @@ bleach>=6.1.0,<7.0.0            # HTML sanitisation
 # ── Rate limiting ────────────────────────────────────────────────────────────────
 flask-limiter>=3.5.0,<4.0.0
 
+# ── Email Service ────────────────────────────────────────────────────────────────
+flask-mail>=0.9.1,<1.0.0         # Email notifications
+
 # ── Database ─────────────────────────────────────────────────────────────────────
 psycopg2-binary>=2.9.0,<3.0.0   # PostgreSQL / Supabase
 

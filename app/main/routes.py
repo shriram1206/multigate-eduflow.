@@ -291,10 +291,6 @@ def unified_request():
                     action='Submitted',
                 ))
                 db.session.commit()
-                # Email confirmation to student
-                from app.email_service import notify_submitted
-                notify_submitted(session.get('email', ''), session.get('name', ''),
-                                 request_type.title(), new_req.id)
 
             flash(f"{request_type.title()} request submitted successfully!", "success")
             return redirect(url_for('main.status'))

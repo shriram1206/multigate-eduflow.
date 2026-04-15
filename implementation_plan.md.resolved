@@ -1,0 +1,96 @@
+# MEF Portal – Enterprise Plan vs Reality Gap (April 2026)
+
+What's **actually in the codebase today** compared to every item in `ENTERPRISE_DEVELOPMENT_PLAN.md`.
+
+---
+
+## ✅ Already Built (100% done)
+
+| Plan Item | Where |
+|---|---|
+| Auth (login, logout, register) | `app/auth/routes.py` |
+| Multi-level approval (Mentor → Advisor → HOD) | `app/staff/routes.py` |
+| Request status tracking | `app/main/routes.py` `/status` |
+| PDF generation (approved + bulk download) | `app/main/routes.py` `/download_approved`, `/download_status` |
+| Student dashboard with stats | `app/main/routes.py` `/dashboard` |
+| Role-based access control (RBAC) | All blueprints + security headers in `__init__.py` |
+| Unified request form (Leave, OD, Apology, Bonafide, Permission) | `/unified_request` |
+| Password hashing & validation | `app/auth/routes.py` `_verify_password` |
+| Account lockout (5 attempts → 15-min lock) | `app/auth/routes.py` `_record_failed_attempt` |
+| Rate limiting on all sensitive routes | `@limiter.limit(...)` decorators |
+| CSRF protection (Flask-WTF) | `app/extensions.py` + `app/__init__.py` |
+| Security response headers (CSP, HSTS, X-Frame, etc.) | `app/__init__.py` `@after_request` |
+| Input sanitisation (Bleach) | All POST handlers |
+| Leave limit enforcement (monthly cap) | `/unified_request` PostgreSQL `generate_series` query |
+| Profile management (edit profile + change password) | `app/auth/routes.py` `/profile` |
+| User management (HOD/Admin CRUD) | `app/staff/routes.py` |
+| Leave rules (HOD can set per-dept limits) | `LeaveLimitRule` ORM — just fixed today |
+| Health check endpoint `/healthz` | `app/main/routes.py` |
+| Push subscription saving (PWA) | `/save-subscription` |
+| Supabase/PostgreSQL connection via env vars | `config.py` |
+| 76 passing automated tests | `tests/` (auth, main, staff, utils, security) |
+| Logging (`logging.getLogger('mefportal')`) | All route files |
+| gunicorn in requirements.txt | `requirements.txt` |
+| SQLAlchemy 2.0 ORM models | `app/models.py` |
+| Error handlers (404, 500, 403) | `app/__init__.py` |
+
+---
+
+## ❌ Missing — Must Build
+
+### Phase 2 (Should-Have per the Plan)
+
+| # | Feature | Plan Reference | Effort |
+|---|---|---|---|
+| **1** | **Email notifications** (approval status change triggers) | §2.1 Should-Have, §7.3, US-005 | ~6–8 hrs |
+| **2** | **Password reset via email** | §2.1 Should-Have, §7.3 | ~3 hrs |
+| **3** | **CSV bulk export** (requests data for HOD/Admin) | §2.1, §7.3, §4.2 | ~2 hrs |
+| **4** | **Structured JSON logging** (queryable in production) | §9.4, §10 #8 | ~1 hr |
+| **5** | **Audit log UI** (who approved, when, notes) | §7.3, §4.2 | ~2 hrs |
+| **6** | **Request history** (students see full lifecycle) | §7.3 | ~1 hr |
+
+### Phase 3 (Enterprise Features per the Plan)
+
+| # | Feature | Plan Reference | Effort |
+|---|---|---|---|
+| **7** | **Two-factor authentication (2FA)** | §7.4, §9.4 | ~6 hrs |
+| **8** | **Advanced analytics dashboard** (trends, dept stats) | §7.4 | ~4 hrs |
+| **9** | **GitHub Actions CI/CD pipeline** | §8.1 Tech Tasks, §9.6 | ~2 hrs |
+| **10** | **Docker / docker-compose** | §5.2, §7.4 | ~2 hrs |
+| **11** | **Alembic DB migrations** | §5.3 Recommended | ~2 hrs |
+
+### Monitoring & Ops (Sprint 1 per the Plan — still pending)
+
+| # | Feature | Plan Reference | Effort |
+|---|---|---|---|
+| **12** | **Sentry error tracking** | §8.1, §9.4, §10 #3 | ~1 hr |
+| **13** | **Performance baseline** (locust/k6 load test) | US-002, §8.1 | ~2 hrs |
+| **14** | **DEPLOYMENT.md runbook** | US-003, §10 #7 | ~1 hr |
+
+---
+
+## Implementation Order (Immediate Priority)
+
+### 🔴 Do Now (Phase 2 core — what the plan calls "Week 5-8")
+
+1. **Structured JSON logging** — 1 hour, no dependencies
+2. **CSV bulk export** — 2 hours, no dependencies
+3. **Audit log UI** — 2 hours (approval history visible per request)
+4. **Email notifications** — requires SMTP config in `.env`
+5. **Password reset via email** — required email first
+
+### 🟠 Do Next (Phase 3 / Ops)
+
+6. **GitHub Actions CI** (runs `pytest` on push)
+7. **Sentry integration**
+8. **Docker + docker-compose**
+9. **Alembic migrations**
+10. **2FA**
+
+---
+
+## What Can Be Built Without External Dependencies
+
+Items 1, 2, 3, 9 (CI), 13 (load test) can be built **right now** without any new accounts or config.
+
+Items 4, 5, 12 need SMTP/Sentry credentials from the user.

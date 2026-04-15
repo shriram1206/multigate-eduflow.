@@ -1,0 +1,15 @@
+# Phase 2 Build Tasks
+
+- [/] 1. `app/logging_config.py` — structured JSON logging
+- [ ] 2. `app/email_service.py` — async email notifications (smtplib, graceful no-op)
+- [ ] 3. `app/models.py` — add AuditLog + PasswordResetToken models
+- [ ] 4. `app/__init__.py` — wire in configure_logging()
+- [ ] 5. `app/staff/routes.py` — audit log entries on every action + CSV export (HOD)
+- [ ] 6. `app/main/routes.py` — audit trail route + CSV export (student) + email on submit
+- [ ] 7. `app/auth/routes.py` — forgot password + reset password routes + email on login
+- [ ] 8. `templates/audit_trail.html` — approval history UI
+- [ ] 9. `templates/forgot_password.html` — request reset form
+- [ ] 10. `templates/reset_password.html` — set new password form
+- [ ] 11. `base.html` — add History nav link for students
+- [ ] 12. `tests/test_phase2.py` — Phase 2 feature tests
+- [ ] 13. Run full test suite to confirm 0 regressions

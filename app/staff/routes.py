@@ -75,11 +75,28 @@ def mentor_action():
             ))
             db.session.commit()
             # Email notification to student
-            from app.email_service import notify_status_changed
+            from app.services.email_service import email_service
             student = User.query.get(req.user_id)
             if student:
-                notify_status_changed(student.email, student.name, req.type, req.id,
-                                      status_value, current_user.name)
+                request_data = {
+                    'request_type': req.type or 'Request',
+                    'date_from': req.date_from.strftime('%Y-%m-%d') if hasattr(req, 'date_from') and req.date_from else 'N/A',
+                    'date_to': req.date_to.strftime('%Y-%m-%d') if hasattr(req, 'date_to') and req.date_to else 'N/A',
+                }
+                if action == 'Approve':
+                    email_service.send_request_approved(
+                        student.email,
+                        student.name,
+                        request_data,
+                        mentor_comment=f"Approved by {current_user.name}"
+                    )
+                else:
+                    email_service.send_request_rejected(
+                        student.email,
+                        student.name,
+                        request_data,
+                        mentor_comment=f"Rejected by {current_user.name}"
+                    )
             flash(f"Request #{req_id} {status_value}", "success")
         else:
             flash(f"Request #{req_id} not found", "danger")
@@ -178,11 +195,28 @@ def advisor_action():
                 note=advisor_note or None,
             ))
             db.session.commit()
-            from app.email_service import notify_status_changed
+            from app.services.email_service import email_service
             student = User.query.get(req.user_id)
             if student:
-                notify_status_changed(student.email, student.name, req.type, req.id,
-                                      status_value, current_user.name, advisor_note or None)
+                request_data = {
+                    'request_type': req.type or 'Request',
+                    'date_from': req.date_from.strftime('%Y-%m-%d') if hasattr(req, 'date_from') and req.date_from else 'N/A',
+                    'date_to': req.date_to.strftime('%Y-%m-%d') if hasattr(req, 'date_to') and req.date_to else 'N/A',
+                }
+                if action == 'Approve':
+                    email_service.send_request_approved(
+                        student.email,
+                        student.name,
+                        request_data,
+                        mentor_comment=advisor_note or f"Approved by {current_user.name}"
+                    )
+                else:
+                    email_service.send_request_rejected(
+                        student.email,
+                        student.name,
+                        request_data,
+                        mentor_comment=advisor_note or f"Rejected by {current_user.name}"
+                    )
         return redirect(url_for('staff.advisor'))
     except Exception as e:
         logger.exception("Database error in advisor action")

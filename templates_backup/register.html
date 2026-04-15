@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>MEF Portal Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background: #f5f5f7;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .main-container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            width: 100%;
+            max-width: none;
+            min-height: 100vh;
+            border: none;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .logo-section {
+            flex: 1;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .logo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            opacity: 0;
+        }
+
+        .logo-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #1d1d1f;
+        }
+
+        .logo-img {
+            width: 280px;
+            height: 280px;
+            max-width: 280px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.04));
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            background: #ffffff;
+            padding: 20px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .logo-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1d1d1f;
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 1rem;
+            color: #86868b;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .reg-container {
+            flex: 1;
+            padding: clamp(1rem, 5vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            position: relative;
+            min-height: 100vh;
+            overflow-y: auto;
+            max-width: none;
+            width: auto;
+            border-radius: 0;
+            box-shadow: none;
+            animation: none;
+        }
+
+        .reg-wrapper {
+            width: 100%;
+            max-width: 460px;
+            transform: translateY(-5%);
+            /* Antigravity Optical Centering */
+            margin-inline: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reg-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 500;
+            color: #1d1d1f;
+            font-size: 14px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            padding-right: 50px !important;
+        }
+
+        form input,
+        form select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #d2d2d7;
+            background: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            color: #1d1d1f;
+        }
+
+        form input:focus,
+        form select:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: #007aff;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #86868b;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 1.1rem;
+            transition: color 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: #1d1d1f;
+        }
+
+        .toggle-password:active {
+            transform: translateY(-50%) scale(0.95);
+            background: rgba(0, 122, 255, 0.2);
+        }
+
+        .toggle-password:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.3);
+        }
+
+        .password-requirements {
+            font-size: 12px;
+            color: #86868b;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background: #007aff;
+            color: #ffffff;
+            font-size: 17px;
+            font-weight: 500;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background: #0051d5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 18px;
+            color: #1d1d1f;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #007aff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .reg-container {
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            .reg-container h2 {
+                font-size: 22px;
+            }
+
+            form input,
+            form select,
+            button {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reg-container {
+                max-width: 100%;
+                padding: 18px;
+            }
+
+            .reg-container h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* Transitions for smooth light/dark shifts */
+        body,
+        .logo-section,
+        .reg-container,
+        .logo-title,
+        .reg-container h2,
+        form label,
+        .logo-subtitle,
+        form input,
+        form select,
+        button[type="submit"],
+        .login-link,
+        .login-link a,
+        .toggle-password {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .main-container {
+                flex-direction: column;
+                min-height: 100vh;
+            }
+
+            .logo-section {
+                min-height: 30vh;
+                padding: 20px;
+            }
+
+            .logo-img {
+                width: 200px;
+                height: 200px;
+            }
+
+            .logo-title {
+                font-size: 2rem;
+            }
+
+            .reg-container {
+                flex: 1;
+                padding: 30px 20px;
+                min-height: 70vh;
+            }
+
+            .reg-container h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-section {
+                min-height: 25vh;
+                padding: 15px;
+            }
+
+            .logo-img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .logo-title {
+                font-size: 1.6rem;
+            }
+
+            .logo-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .reg-container {
+                padding: 20px 15px;
+            }
+
+            .reg-container h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Logo Section -->
+        <div class="logo-section" style="display: none;">
+            <div class="logo-content">
+                <img src="{{ url_for('static', filename='mef_logo.png') }}" alt="MEF Logo" class="logo-img">
+                <h1 class="logo-title">MEF Portal</h1>
+                <p class="logo-subtitle">Modern Engineering Framework<br>Academic Excellence Platform</p>
+            </div>
+        </div>
+
+        <!-- Registration Section -->
+        <div class="reg-container">
+            <div class="reg-wrapper">
+                <h2>New User Registration</h2>
+
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                {% if category == 'danger' %}
+                <div class="alert alert-danger"
+                    style="padding: 12px; margin-bottom: 15px; border-radius: 8px; font-weight: 500; text-align: center; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+                    {{ message }}
+                </div>
+                {% else %}
+                <div class="alert alert-success"
+                    style="padding: 12px; margin-bottom: 15px; border-radius: 8px; font-weight: 500; text-align: center; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+                    {{ message }}
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('auth.register') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="register_number">Register Number:</label>
+                    <input type="text" id="register_number" name="register_number" required pattern="[0-9]+"
+                        title="Only numbers are allowed" maxlength="12" oninput="validateRegisterNumber(this)">
+                    <div id="auto_generated_note"
+                        style="font-size: 12px; color: #666; margin-bottom: 10px; display: none;">
+                        Register number will be auto-generated for this role.
+                    </div>
+
+                    <label for="password">Password:</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePassword('password', 'toggleIcon1')" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye" id="toggleIcon1"></i>
+                        </button>
+                    </div>
+                    <div class="password-requirements" style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                        Password must be at least 8 characters and contain at least one uppercase letter,
+                        one lowercase letter, one digit, and one special character (!@#$%^&*(),.?":{}|<>).
+                    </div>
+
+                    <label for="confirm_password">Confirm Password:</label>
+                    <div class="input-group">
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePassword('confirm_password', 'toggleIcon2')"
+                            aria-label="Toggle password visibility">
+                            <i class="fas fa-eye" id="toggleIcon2"></i>
+                        </button>
+                    </div>
+
+                    <label for="email">Email ID:</label>
+                    <input type="email" id="email" name="email" required>
+
+
+                    <label for="role">Role:</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="Student">Student</option>
+                        <option value="Mentor">Mentor</option>
+                        <option value="Advisor">Advisor</option>
+                        <option value="HOD">HOD</option>
+                    </select>
+
+                    <div id="mentor-group" style="display:none;">
+                        <label for="mentor">Mentor (for Students):</label>
+                        <select id="mentor" name="mentor">
+                            <option value="">Select Mentor</option>
+                            {% if mentors %}
+                            {% for mentor in mentors %}
+                            <option value="{{ mentor['email'] }}" data-department="{{ mentor['department'] }}">{{
+                                mentor['name'] }} ({{ mentor['department'] }})</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <label for="department">Department:</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select Department</option>
+                        <option value="CSE">Computer Science and Engineering (CSE)</option>
+                        <option value="IT">Information Technology (IT)</option>
+                        <option value="ECE">Electronics and Communication Engineering (ECE)</option>
+                        <option value="EEE">Electrical and Electronics Engineering (EEE)</option>
+                        <option value="MECH">Mechanical Engineering (MECH)</option>
+                        <option value="CIVIL">Civil Engineering (CIVIL)</option>
+                        <option value="AI&DS">Artificial Intelligence and Data Science (AI&DS)</option>
+                        <option value="BIO">Biomedical Engineering (BIO)</option>
+                        <option value="BIOTECH">Biotechnology Engineering (BIOTECH)</option>
+                        <option value="MBA">Master of Business Administration (MBA)</option>
+                    </select>
+
+                    <div id="year-group">
+                        <label for="year">Year/Class (for Students):</label>
+                        <select id="year" name="year">
+                            <option value="">Choose...</option>
+                            <option value="IV">IV Year</option>
+                        </select>
+                    </div>
+
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required min="1900-01-01" max="2025-12-31">
+
+                    <div id="student-type-group">
+                        <label for="student_type">Student Type:</label>
+                        <select id="student_type" name="student_type" required>
+                            <option value="">Select Student Type</option>
+                            <option value="Day Scholar">Day Scholar</option>
+                            <option value="Hosteller">Hosteller</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Register</button>
+                </form>
+                <div class="login-link">
+                    Already have an account? <a href="{{ url_for('auth.login') }}">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show mentor dropdown only for Student role, hide year/class for HOD
+        document.addEventListener('DOMContentLoaded', function () {
+            var roleSelect = document.getElementById('role');
+            var yearGroup = document.getElementById('year-group');
+            var mentorGroup = document.getElementById('mentor-group');
+            var studentTypeGroup = document.getElementById('student-type-group');
+            var registerNumberField = document.getElementById('register_number');
+            var autoGeneratedNote = document.getElementById('auto_generated_note');
+            var studentTypeSelect = document.getElementById('student_type');
+            var departmentSelect = document.getElementById('department');
+            var mentorSelect = document.getElementById('mentor');
+
+            // Store all mentor options
+            var allMentorOptions = [];
+            if (mentorSelect) {
+                Array.from(mentorSelect.options).forEach(function (option) {
+                    if (option.value) {
+                        allMentorOptions.push({
+                            value: option.value,
+                            text: option.text,
+                            department: option.getAttribute('data-department')
+                        });
+                    }
+                });
+            }
+
+            function updateRoleVisibility() {
+                var selectedRole = roleSelect.value.toLowerCase();
+
+                if (selectedRole && selectedRole === 'hod') {
+                    yearGroup.style.display = 'none';
+                } else {
+                    yearGroup.style.display = '';
+                }
+
+                if (selectedRole && selectedRole === 'student') {
+                    mentorGroup.style.display = '';
+                    studentTypeGroup.style.display = '';
+                    registerNumberField.style.display = '';
+                    registerNumberField.required = true;
+                    studentTypeSelect.required = true;
+                    autoGeneratedNote.style.display = 'none';
+
+                    // Filter mentors when department changes
+                    filterMentorsByDepartment();
+                } else {
+                    mentorGroup.style.display = 'none';
+                    studentTypeGroup.style.display = 'none';
+                    studentTypeSelect.required = false;
+
+                    if (selectedRole === 'mentor' || selectedRole === 'advisor' || selectedRole === 'hod') {
+                        registerNumberField.style.display = 'none';
+                        registerNumberField.required = false;
+                        autoGeneratedNote.style.display = 'block';
+                        // Show the auto-generated format
+                        if (selectedRole === 'mentor') {
+                            autoGeneratedNote.textContent = 'Register number will be auto-generated (e.g., MEN001, MEN002, ...)';
+                        } else if (selectedRole === 'advisor') {
+                            autoGeneratedNote.textContent = 'Register number will be auto-generated (e.g., ADV001, ADV002, ...)';
+                        } else if (selectedRole === 'hod') {
+                            autoGeneratedNote.textContent = 'Register number will be auto-generated (e.g., HOD001, HOD002, ...)';
+                        }
+                    } else {
+                        registerNumberField.style.display = '';
+                        registerNumberField.required = true;
+                        studentTypeGroup.style.display = '';
+                        studentTypeSelect.required = true;
+                        autoGeneratedNote.style.display = 'none';
+                    }
+                }
+            }
+
+            function filterMentorsByDepartment() {
+                if (!mentorSelect || roleSelect.value.toLowerCase() !== 'student') return;
+
+                var selectedDept = departmentSelect.value;
+
+                // Clear current options except the first one
+                mentorSelect.innerHTML = '<option value="">Select Mentor</option>';
+
+                // Add filtered options
+                allMentorOptions.forEach(function (mentor) {
+                    if (!selectedDept || mentor.department === selectedDept) {
+                        var option = document.createElement('option');
+                        option.value = mentor.value;
+                        option.textContent = mentor.text;
+                        option.setAttribute('data-department', mentor.department);
+                        mentorSelect.appendChild(option);
+                    }
+                });
+
+                // Show info if no mentors available
+                if (selectedDept && mentorSelect.options.length === 1) {
+                    var option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No mentors available for this department';
+                    option.disabled = true;
+                    mentorSelect.appendChild(option);
+                }
+            }
+
+            roleSelect.addEventListener('change', updateRoleVisibility);
+            departmentSelect.addEventListener('change', filterMentorsByDepartment);
+            updateRoleVisibility();
+        });
+    </script>
+
+    <script>
+        function togglePassword(id, iconId) {
+            const input = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.className = "fas fa-eye-slash";
+            } else {
+                input.type = "password";
+                icon.className = "fas fa-eye";
+            }
+        }
+
+        function validateRegisterNumber(input) {
+            input.value = input.value.replace(/[^0-9]/g, ''); // Removes non-numeric characters
+        }
+
+        // Password validation
+        function validatePassword(password) {
+            // Check length
+            if (password.length < 8) {
+                return false;
+            }
+
+            // Check for uppercase
+            if (!/[A-Z]/.test(password)) {
+                return false;
+            }
+
+            // Check for lowercase
+            if (!/[a-z]/.test(password)) {
+                return false;
+            }
+
+            // Check for digits
+            if (!/[0-9]/.test(password)) {
+                return false;
+            }
+
+            // Check for special characters
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Form validation before submission
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+            var passwordInput = document.getElementById('password');
+            var confirmInput = document.getElementById('confirm_password');
+
+            // Real-time password validation
+            passwordInput.addEventListener('input', function () {
+                var isValid = validatePassword(this.value);
+                this.style.borderColor = isValid ? '#3f51b5' : '#ff5252';
+            });
+
+            // Check password match
+            confirmInput.addEventListener('input', function () {
+                var passwordsMatch = this.value === passwordInput.value;
+                this.style.borderColor = passwordsMatch ? '#3f51b5' : '#ff5252';
+            });
+
+            form.addEventListener('submit', function (event) {
+                var password = passwordInput.value;
+                var confirmPassword = confirmInput.value;
+                var name = document.getElementById('name').value.trim();
+                var email = document.getElementById('email').value.trim();
+                var role = document.getElementById('role').value;
+                var department = document.getElementById('department').value;
+                var dob = document.getElementById('dob').value;
+
+                // Basic field validation
+                if (!name) {
+                    alert('Please enter your full name');
+                    event.preventDefault();
+                    return false;
+                }
+
+                if (!email) {
+                    alert('Please enter your email address');
+                    event.preventDefault();
+                    return false;
+                }
+
+                if (!role) {
+                    alert('Please select your role');
+                    event.preventDefault();
+                    return false;
+                }
+
+                if (!department) {
+                    alert('Please select your department');
+                    event.preventDefault();
+                    return false;
+                }
+
+                if (!dob) {
+                    alert('Please enter your date of birth');
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Role-specific validation
+                var selectedRole = role.toLowerCase();
+                if (selectedRole === 'student') {
+                    var registerNumber = document.getElementById('register_number').value.trim();
+                    var studentType = document.getElementById('student_type').value;
+
+                    if (!registerNumber) {
+                        alert('Please enter your register number');
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    if (!studentType) {
+                        alert('Please select your student type (Day Scholar or Hosteller)');
+                        event.preventDefault();
+                        return false;
+                    }
+                }
+
+                // Check password requirements
+                if (!validatePassword(password)) {
+                    alert('Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.');
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Check if passwords match
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    event.preventDefault();
+                    return false;
+                }
+
+                return true;
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - MEF Portal{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Profile Header -->
+    <div class="glass-panel rounded-2xl p-8 mb-6">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+            <div
+                class="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+                {{ user[2][0]|upper if user[2] else 'U' }}
+            </div>
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100">{{ user[2] }}</h1>
+                <p class="text-slate-600 text-lg">{{ user[3] }} - {{ user[6]|upper }}</p>
+                <div class="flex flex-wrap justify-center md:justify-start gap-2 mt-2">
+                    <span
+                        class="px-3 py-1 rounded-full bg-white/40 dark:bg-slate-800/40 border border-white/30 dark:border-white/10 text-sm font-medium text-slate-700 dark:text-slate-200">
+                        <i class="fas fa-id-card mr-1"></i> {{ user[4] }}
+                    </span>
+                    <span
+                        class="px-3 py-1 rounded-full bg-white/40 dark:bg-slate-800/40 border border-white/30 dark:border-white/10 text-sm font-medium text-slate-700 dark:text-slate-200">
+                        <i class="fas fa-envelope mr-1"></i> {{ user[5] }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="glass-panel rounded-xl p-4 text-center">
+            <div class="text-3xl font-bold text-indigo-600">{{ stats.total_requests }}</div>
+            <div class="text-sm text-slate-600">Total Requests</div>
+        </div>
+        <div class="glass-panel rounded-xl p-4 text-center">
+            <div class="text-3xl font-bold text-yellow-600">{{ stats.pending_requests }}</div>
+            <div class="text-sm text-slate-600">Pending</div>
+        </div>
+        <div class="glass-panel rounded-xl p-4 text-center">
+            <div class="text-3xl font-bold text-green-600">{{ stats.approved_requests }}</div>
+            <div class="text-sm text-slate-600">Approved</div>
+        </div>
+        <div class="glass-panel rounded-xl p-4 text-center">
+            <div class="text-3xl font-bold text-red-600">{{ stats.rejected_requests }}</div>
+            <div class="text-sm text-slate-600">Rejected</div>
+        </div>
+    </div>
+
+    <!-- Profile Forms -->
+    <div class="grid md:grid-cols-2 gap-6">
+        <!-- Update Profile Form -->
+        <div class="glass-panel rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+                <i class="fas fa-user-edit mr-2 text-indigo-600"></i>Update Profile
+            </h2>
+            <form method="POST" action="{{ url_for('auth.profile') }}">
+                <input type="hidden" name="action" value="update_profile">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Full
+                            Name</label>
+                        <input type="text" name="name" value="{{ user[2] }}" required
+                            class="w-full px-4 py-3 rounded-xl glass-input text-slate-800 dark:text-slate-100">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Email
+                            Address</label>
+                        <input type="email" name="email" value="{{ user[5] }}" required
+                            class="w-full px-4 py-3 rounded-xl glass-input text-slate-800 dark:text-slate-100">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Registration
+                            Number</label>
+                        <input type="text" value="{{ user[4] }}" disabled
+                            class="w-full px-4 py-3 rounded-xl bg-white/20 dark:bg-slate-800/40 border border-white/30 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-not-allowed">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Registration number cannot be changed
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Role</label>
+                        <input type="text" value="{{ user[3] }}" disabled
+                            class="w-full px-4 py-3 rounded-xl bg-white/20 dark:bg-slate-800/40 border border-white/30 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-not-allowed">
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Department</label>
+                        <input type="text" value="{{ user[6]|upper }}" disabled
+                            class="w-full px-4 py-3 rounded-xl bg-white/20 dark:bg-slate-800/40 border border-white/30 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-not-allowed">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full mt-6 px-6 py-3 rounded-xl glass-button text-slate-800 dark:text-slate-100 font-semibold hover:bg-white/50 dark:bg-slate-700/60">
+                    <i class="fas fa-save mr-2"></i>Save Changes
+                </button>
+            </form>
+        </div>
+
+        <!-- Change Password Form -->
+        <div class="glass-panel rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+                <i class="fas fa-lock mr-2 text-indigo-600"></i>Change Password
+            </h2>
+            <form method="POST" action="{{ url_for('auth.profile') }}">
+                <input type="hidden" name="action" value="change_password">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Current
+                            Password</label>
+                        <input type="password" name="current_password" required
+                            class="w-full px-4 py-3 rounded-xl glass-input text-slate-800 dark:text-slate-100"
+                            placeholder="Enter current password">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">New
+                            Password</label>
+                        <input type="password" name="new_password" required
+                            class="w-full px-4 py-3 rounded-xl glass-input text-slate-800 dark:text-slate-100"
+                            placeholder="Enter new password">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Min 8 chars, uppercase, lowercase,
+                            digit, special char</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Confirm New
+                            Password</label>
+                        <input type="password" name="confirm_password" required
+                            class="w-full px-4 py-3 rounded-xl glass-input text-slate-800 dark:text-slate-100"
+                            placeholder="Confirm new password">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full mt-6 px-6 py-3 rounded-xl glass-button text-slate-800 dark:text-slate-100 font-semibold hover:bg-white/50 dark:bg-slate-700/60">
+                    <i class="fas fa-key mr-2"></i>Change Password
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="glass-panel rounded-2xl p-6 mt-6">
+        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+            <i class="fas fa-info-circle mr-2 text-indigo-600"></i>Account Information
+        </h2>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white/30 dark:bg-slate-800/40 rounded-xl p-4">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Year</div>
+                <div class="text-lg font-semibold text-slate-800 dark:text-slate-100">{{ user[7] or 'N/A' }}</div>
+            </div>
+            <div class="bg-white/30 dark:bg-slate-800/40 rounded-xl p-4">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Student Type</div>
+                <div class="text-lg font-semibold text-slate-800 dark:text-slate-100">{{ user[9] or 'Day Scholar' }}
+                </div>
+            </div>
+            {% if user[10] %}
+            <div class="bg-white/30 dark:bg-slate-800/40 rounded-xl p-4">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Mentor Email</div>
+                <div class="text-lg font-semibold text-slate-800 dark:text-slate-100">{{ user[10] }}</div>
+            </div>
+            {% endif %}
+            <div class="bg-white/30 dark:bg-slate-800/40 rounded-xl p-4">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Date of Birth</div>
+                <div class="text-lg font-semibold text-slate-800 dark:text-slate-100">{{ user[8] or 'N/A' }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

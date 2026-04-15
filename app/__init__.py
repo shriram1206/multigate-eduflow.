@@ -38,6 +38,10 @@ def create_app(test_config=None):
     login_manager.init_app(app)
     limiter.init_app(app)
     csrf.init_app(app)
+    
+    # ── Email Service ───────────────────────────────────────────────────────
+    from app.services.email_service import email_service
+    email_service.init_app(app)
 
     # ── Structured logging ──────────────────────────────────────────────────
     from app.logging_config import configure_logging

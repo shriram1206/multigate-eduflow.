@@ -22,7 +22,7 @@ def test_forgot_password_invalid_email(client, app):
         assert "receive a reset link shortly" in flashes.get('info', '')
 
 
-@patch('app.email_service.send_password_reset')
+@patch('app.services.email_service.email_service.send_password_reset')
 def test_forgot_password_valid_email(mock_send, client, app, seeded_student):
     """Submitting a valid email generates a token and sends email."""
     with app.app_context():
@@ -42,7 +42,7 @@ def test_forgot_password_valid_email(mock_send, client, app, seeded_student):
         assert len(token.token) > 20
 
 
-@patch('app.email_service.send_password_reset')
+@patch('app.services.email_service.email_service.send_password_reset')
 def test_reset_password_flow(mock_send, client, app, seeded_student):
     """Full end-to-end password reset flow."""
     with app.app_context():

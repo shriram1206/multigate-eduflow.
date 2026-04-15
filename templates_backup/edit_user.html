@@ -1,0 +1,368 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: #f7f7f7;
+    }
+
+    .navbar {
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+        border-bottom: 1px solid #ececec;
+        background: #fff !important;
+    }
+
+    .form-container {
+        max-width: 800px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .form-header h2 {
+        font-size: 2rem;
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .form-body {
+        padding: 40px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 12px 16px;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        background: #fff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input:disabled {
+        background: #f8f9fa;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        color: white;
+        text-decoration: none;
+    }
+
+    .user-info {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-left: 4px solid #667eea;
+    }
+
+    .user-info h3 {
+        margin: 0 0 15px 0;
+        color: #333;
+        font-size: 1.2rem;
+    }
+
+    .user-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .user-info-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-info-label {
+        font-size: 0.8rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+        font-weight: 600;
+    }
+
+    .user-info-value {
+        font-size: 1rem;
+        color: #333;
+        font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            margin: 20px 10px;
+        }
+
+        .form-body {
+            padding: 20px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-header">
+        <h2><i class="fas fa-user-edit"></i> Edit User</h2>
+    </div>
+
+    <div class="form-body">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Current User Info -->
+        <div class="user-info">
+            <h3><i class="fas fa-info-circle"></i> Current User Information</h3>
+            <div class="user-info-grid">
+                <div class="user-info-item">
+                    <div class="user-info-label">User ID</div>
+                    <div class="user-info-value">#{{ user[0] }}</div>
+                </div>
+                <div class="user-info-item">
+                    <div class="user-info-label">Username</div>
+                    <div class="user-info-value">{{ user[1] }}</div>
+                </div>
+                <div class="user-info-item">
+                    <div class="user-info-label">Register Number</div>
+                    <div class="user-info-value">{{ user[5] }}</div>
+                </div>
+                <div class="user-info-item">
+                    <div class="user-info-label">Created</div>
+                    <div class="user-info-value">{{ user[12] if user|length > 12 else 'N/A' }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <form method="POST" action="{{ url_for('staff.edit_user', user_id=user[0]) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" value="{{ user[2] }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" value="{{ user[6] }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role *</label>
+                    <select id="role" name="role" required>
+                        <option value="Student" {% if user[3]=='Student' %}selected{% endif %}>Student</option>
+                        <option value="Mentor" {% if user[3]=='Mentor' %}selected{% endif %}>Mentor</option>
+                        <option value="Advisor" {% if user[3]=='Advisor' %}selected{% endif %}>Advisor</option>
+                        <option value="HOD" {% if user[3]=='HOD' %}selected{% endif %}>HOD</option>
+                        {% if session.role == 'Admin' %}
+                        <option value="Admin" {% if user[3]=='Admin' %}selected{% endif %}>Admin</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department *</label>
+                    <select id="department" name="department" required>
+                        <option value="CSE" {% if (user[7] or '')|lower == 'cse' %}selected{% endif %}>Computer Science and Engineering
+                            (CSE)</option>
+                        <option value="IT" {% if (user[7] or '')|lower == 'it' %}selected{% endif %}>Information Technology (IT)
+                        </option>
+                        <option value="ECE" {% if (user[7] or '')|lower == 'ece' %}selected{% endif %}>Electronics and Communication
+                            Engineering (ECE)</option>
+                        <option value="EEE" {% if (user[7] or '')|lower == 'eee' %}selected{% endif %}>Electrical and Electronics
+                            Engineering (EEE)</option>
+                        <option value="MECH" {% if (user[7] or '')|lower == 'mech' %}selected{% endif %}>Mechanical Engineering (MECH)
+                        </option>
+                        <option value="CIVIL" {% if (user[7] or '')|lower == 'civil' %}selected{% endif %}>Civil Engineering (CIVIL)
+                        </option>
+                        <option value="AI&DS" {% if (user[7] or '')|lower == 'ai&ds' %}selected{% endif %}>Artificial Intelligence and
+                            Data Science (AI&DS)</option>
+                        <option value="AERO" {% if (user[7] or '')|lower == 'aero' %}selected{% endif %}>Aeronautical Engineering (AERO)
+                        </option>
+                        <option value="BIO" {% if (user[7] or '')|lower == 'bio' %}selected{% endif %}>Biomedical Engineering (BIO)
+                        </option>
+                        <option value="BIOTECH" {% if (user[7] or '')|lower == 'biotech' %}selected{% endif %}>Biotechnology Engineering
+                            (BIOTECH)</option>
+                        <option value="MBA" {% if (user[7] or '')|lower == 'mba' %}selected{% endif %}>Master of Business Administration
+                            (MBA)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year/Class</label>
+                    <select id="year" name="year">
+                        <option value="">Select Year</option>
+                        <option value="I Year" {% if user[8]=='I Year' %}selected{% endif %}>I Year</option>
+                        <option value="II Year" {% if user[8]=='II Year' %}selected{% endif %}>II Year</option>
+                        <option value="III Year" {% if user[8]=='III Year' %}selected{% endif %}>III Year</option>
+                        <option value="IV Year" {% if user[8]=='IV Year' %}selected{% endif %}>IV Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="student_type">Student Type</label>
+                    <select id="student_type" name="student_type">
+                        <option value="Day Scholar" {% if user[10]=='Day Scholar' or not user[10] %}selected{% endif %}>
+                            Day Scholar</option>
+                        <option value="Hosteller" {% if user[10]=='Hosteller' %}selected{% endif %}>Hosteller</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="mentor_email">Mentor Email (for Students)</label>
+                    <input type="email" id="mentor_email" name="mentor_email"
+                        value="{{ user[11] if user|length > 11 else '' }}" placeholder="Optional mentor email">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update User
+                </button>
+                <a href="{{ url_for('staff.user_management') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to User Management
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Show/hide year and student type based on role
+    document.getElementById('role').addEventListener('change', function () {
+        const yearGroup = document.getElementById('year').closest('.form-group');
+        const studentTypeGroup = document.getElementById('student_type').closest('.form-group');
+        const mentorEmailGroup = document.getElementById('mentor_email').closest('.form-group');
+
+        if (this.value === 'Student') {
+            yearGroup.style.display = 'flex';
+            studentTypeGroup.style.display = 'flex';
+            mentorEmailGroup.style.display = 'flex';
+        } else {
+            yearGroup.style.display = 'none';
+            studentTypeGroup.style.display = 'none';
+            mentorEmailGroup.style.display = 'none';
+        }
+    });
+
+    // Initialize visibility on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('role').dispatchEvent(new Event('change'));
+    });
+</script>
+
+{% endblock %}

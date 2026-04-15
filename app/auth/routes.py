@@ -243,6 +243,16 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             
+            # Send welcome email to new student
+            if role == 'Student':
+                from app.services.email_service import email_service
+                email_service.send_welcome(
+                    email,
+                    name,
+                    register_number,
+                    url_for('main.dashboard', _external=True)
+                )
+            
             if role in ['Mentor', 'Advisor', 'HOD']:
                 user_data = {
                     'name': name,
@@ -444,8 +454,8 @@ def forgot_password():
             db.session.commit()
 
             reset_url = url_for('auth.reset_password', token=token_obj.token, _external=True)
-            from app.email_service import send_password_reset
-            send_password_reset(user.email, user.name, reset_url)
+            from app.services.email_service import email_service
+            email_service.send_password_reset(user.email, user.name, reset_url)
             logger.info("Password reset email dispatched for user_id=%d", user.id)
     except Exception:
         logger.exception("Error in forgot_password")

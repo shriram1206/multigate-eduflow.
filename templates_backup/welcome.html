@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>MEF Portal - Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mobile-responsive.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Navigation bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            line-height: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex: 0 0 auto;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .sign-in {
+            padding: 8px 16px;
+            color: #667eea;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .sign-up {
+            padding: 8px 16px;
+            background-color: #667eea;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            border: 1px solid #667eea;
+            white-space: nowrap;
+        }
+
+        .sign-in:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+
+        .sign-up:hover {
+            background-color: #5a6fd5;
+        }
+
+        /* Hero Section */
+        .main-container {
+            width: 100%;
+            max-width: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 80px 50px;
+            background-color: #ffffff;
+            position: relative;
+            gap: 60px;
+        }
+
+        .hero-content {
+            flex: 1;
+            text-align: left;
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 300px;
+            height: 300px;
+            max-width: 300px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.1;
+        }
+
+        .hero-title span {
+            color: #667eea;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: #4a4a4a;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 30px;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            font-weight: 400;
+            max-width: 500px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 14px 28px;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .cta-btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+        }
+
+        .cta-btn-primary:hover {
+            background: #5a67d8;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .cta-btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        /* Features section */
+        .features-section {
+            padding: 80px 50px;
+            background: #f8f9fa;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .features-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .features-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 4px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* App section */
+        .app-section {
+            padding: 80px 50px;
+            background: white;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .app-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .app-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .app-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .app-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .app-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .app-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 40px 50px 20px;
+            color: #666;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-link {
+            margin-bottom: 10px;
+        }
+
+        .footer-link a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 60px 30px;
+            }
+
+            .hero-content {
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .hero-description {
+                margin: 0 auto 30px auto;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 15px;
+                position: relative;
+            }
+
+            .navbar-left {
+                gap: 6px;
+            }
+
+            .main-container {
+                padding-top: 0;
+            }
+
+            .mobile-menu-toggle {
+                margin-right: 0;
+            }
+
+            .logo-container {
+                margin-left: 0;
+                position: static;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .auth-buttons {
+                gap: 8px;
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .sign-in,
+            .sign-up {
+                padding: 9px 16px;
+                font-size: 13px;
+            }
+
+            .sign-up {
+                border-radius: 6px;
+            }
+
+            .hero-section {
+                padding: 40px 20px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .logo-img {
+                width: 220px;
+                height: 220px;
+            }
+
+            .features-section,
+            .app-section {
+                padding: 60px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 12px 12px;
+            }
+
+            .navbar-left {
+                gap: 5px;
+            }
+
+            .mobile-menu-toggle {
+                margin-right: 0;
+            }
+
+            .hero-section {
+                padding: 30px 15px;
+            }
+
+            .logo-text {
+                font-size: 16px;
+            }
+
+            .auth-buttons {
+                gap: 6px;
+                right: 12px;
+            }
+
+            .sign-in,
+            .sign-up {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .sign-up {
+                border-radius: 6px;
+            }
+
+            .hero-section {
+                padding: 40px 15px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-description {
+                font-size: 0.95rem;
+            }
+
+            .logo-img {
+                width: 180px;
+                height: 180px;
+            }
+
+            .cta-btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                min-width: 160px;
+            }
+
+            .features-title {
+                font-size: 1.8rem;
+            }
+
+            .app-section {
+                padding: 40px 15px;
+            }
+        }
+
+        /* Transitions for smooth light/dark shifts */
+        body,
+        .navbar,
+        .nav-link,
+        .hero-section,
+        .hero-title,
+        .hero-subtitle,
+        .hero-description,
+        .features-section,
+        .features-title,
+        .features-subtitle,
+        .feature-card,
+        .feature-title,
+        .feature-description,
+        .app-section,
+        .app-title,
+        .app-name,
+        .app-description,
+        .app-icon,
+        .footer,
+        .footer-title,
+        .footer-link a,
+        .footer-bottom,
+        .logo-text,
+        .cta-btn,
+        .sign-in,
+        .sign-up {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+
+            body,
+            .navbar,
+            .hero-section,
+            .app-section {
+                background-color: #121316;
+                color: #e3e2e6;
+            }
+
+            .features-section,
+            .footer {
+                background-color: #1a1c1e;
+            }
+
+            .feature-card {
+                background-color: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: none;
+            }
+
+            .logo-text,
+            .nav-link,
+            .hero-title,
+            .features-title,
+            .app-title,
+            .feature-title,
+            .app-name,
+            .footer-title {
+                color: #e3e2e6;
+            }
+
+            .hero-subtitle,
+            .hero-description,
+            .features-subtitle,
+            .feature-description,
+            .app-description,
+            .footer,
+            .footer-link a {
+                color: #c4c6d0;
+            }
+
+            .nav-link:hover,
+            .footer-link a:hover {
+                color: #d6e3ff;
+            }
+
+            .hero-title span,
+            .feature-icon,
+            .app-icon i {
+                color: #aac7ff;
+            }
+
+            .app-icon {
+                background: rgba(170, 199, 255, 0.1);
+            }
+
+            .cta-btn-primary {
+                background: #415f91;
+                color: #ffffff;
+            }
+
+            .cta-btn-primary:hover {
+                background: #284777;
+            }
+
+            .cta-btn-secondary {
+                background: transparent;
+                color: #aac7ff;
+                border: 1px solid #7792c3;
+            }
+
+            .cta-btn-secondary:hover {
+                background: rgba(170, 199, 255, 0.1);
+            }
+
+            .sign-in {
+                color: #aac7ff;
+            }
+
+            .sign-in:hover {
+                background-color: rgba(170, 199, 255, 0.1);
+            }
+
+            .sign-up {
+                background-color: #415f91;
+                border-color: #415f91;
+                color: #ffffff;
+            }
+
+            .sign-up:hover {
+                background-color: #284777;
+            }
+
+            .footer-bottom {
+                border-top-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="logo-container">
+                <span class="logo-text">MEF</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#apps" class="nav-link">Apps</a>
+            <a href="#about" class="nav-link">About Us</a>
+        </div>
+        <div class="auth-buttons">
+            <a href="{{ url_for('auth.login') }}" class="sign-in">Sign In</a>
+            <a href="{{ url_for('auth.register') }}" class="sign-up">Sign Up</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Your educational <span>workflow</span>, simplified</h1>
+                <p class="hero-subtitle">Powering academic excellence</p>
+                <p class="hero-description">
+                    A comprehensive portal designed for students, mentors, advisors, and administrators to streamline
+                    educational processes and enhance collaboration.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('auth.login') }}" class="cta-btn cta-btn-primary">
+                        Get Started
+                    </a>
+                    <a href="#features" class="cta-btn cta-btn-secondary">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='mef_logo.png') }}" alt="MEF Portal" class="logo-img">
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div id="features" class="features-section">
+            <div class="features-container">
+                <div class="features-header">
+                    <h2 class="features-title">Why Choose MEF Portal?</h2>
+                    <p class="features-subtitle">Experience the future of educational administration</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-clock feature-icon"></i>
+                        <h3 class="feature-title">Streamlined Requests</h3>
+                        <p class="feature-description">Submit leave, permission, and other requests with ease. Track
+                            status in real-time and get notifications on approvals.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h3 class="feature-title">Role-Based Access</h3>
+                        <p class="feature-description">Tailored dashboards for Students, Mentors, Advisors, and HODs
+                            with appropriate permissions and workflows.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt feature-icon"></i>
+                        <h3 class="feature-title">Secure & Reliable</h3>
+                        <p class="feature-description">Enterprise-grade security with encrypted data and secure
+                            authentication protecting your information.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-mobile-alt feature-icon"></i>
+                        <h3 class="feature-title">Mobile Friendly</h3>
+                        <p class="feature-description">Responsive design that works perfectly on all devices and screen
+                            sizes for on-the-go access.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Section -->
+        <div id="apps" class="app-section">
+            <div class="app-container">
+                <div class="app-content">
+                    <h2 class="app-title">Portal Applications</h2>
+                    <ul class="app-list">
+                        <li class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div>
+                                <h3 class="app-name">Request Management</h3>
+                                <p class="app-description">Manage all types of academic requests in one place</p>
+                            </div>
+                        </li>
+                        <li class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div>
+                                <h3 class="app-name">Student Dashboard</h3>
+                                <p class="app-description">Track requests and approvals in real-time</p>
+                            </div>
+                        </li>
+                        <li class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h3 class="app-name">Admin Console</h3>
+                                <p class="app-description">Complete oversight for staff and administrators</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="hero-image">
+                    <img src="{{ url_for('static', filename='mef_logo.png') }}" alt="MEF Apps"
+                        style="width: 250px; height: 250px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer id="about" class="footer">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3 class="footer-title">Multigate Edu Flow Portal</h3>
+                    <p>A comprehensive educational workflow management system designed for modern academic institutions.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="{{ url_for('auth.login') }}">Login</a></li>
+                        <li class="footer-link"><a href="{{ url_for('auth.register') }}">Register</a></li>
+                        <li class="footer-link"><a href="#features">Features</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><i class="fas fa-envelope"></i> support@mefportal.edu</li>
+                        <li class="footer-link"><i class="fas fa-phone"></i> +91 8056668999</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Multigate Edu Flow Portal. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='mobile-responsive.js') }}"></script>
+</body>
+
+</html>
