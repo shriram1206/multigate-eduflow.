@@ -1,0 +1,32 @@
+# MEF Portal — Python dependencies
+# Pinned to minor-version ranges for reproducible builds.
+# Run:  pip install -r requirements.txt
+
+# ── Web framework ───────────────────────────────────────────────────────────────
+flask>=2.3.0,<3.0.0
+werkzeug>=3.0.0,<4.0.0
+
+# ── Auth / Security ─────────────────────────────────────────────────────────────
+flask-login>=0.6.3,<1.0.0
+flask-wtf>=1.2.0,<2.0.0         # CSRF protection
+bleach>=6.1.0,<7.0.0            # HTML sanitisation
+
+# ── Rate limiting ────────────────────────────────────────────────────────────────
+flask-limiter>=3.5.0,<4.0.0
+
+# ── Database ─────────────────────────────────────────────────────────────────────
+psycopg2-binary>=2.9.0,<3.0.0   # PostgreSQL / Supabase
+
+# ── Environment ──────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0,<2.0.0
+
+# ── PDF generation ───────────────────────────────────────────────────────────────
+# fpdf2 is the actively maintained successor to legacy fpdf (v1.x)
+fpdf2>=2.7.0,<3.0.0
+
+# ── Production WSGI server ────────────────────────────────────────────────────────
+gunicorn>=22.0.0,<24.0.0        # Do NOT use Flask dev server in production
+
+# ── REMOVED (unused dependencies) ────────────────────────────────────────────────
+# flask-cors   — no CORS headers are set in this app; module was never initialised
+# pdfplumber   — PDF reader library; app only GENERATES PDFs (uses fpdf2), never reads them
